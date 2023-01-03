@@ -1,0 +1,1 @@
+This API is only available, if the device is in the manager mode. If the device is in the satellite mode, the device can only be accessed via alarm manager device.
