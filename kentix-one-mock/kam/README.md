@@ -1,0 +1,1 @@
+This API shows all devices added as satellite to this alarm manager. 

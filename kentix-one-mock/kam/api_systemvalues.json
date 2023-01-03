@@ -1,0 +1,477 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/api/systemvalues"
+  },
+  "response": {
+    "body": {
+      "units": {
+        "active_power": "W",
+        "apparent_power": "VA",
+        "battery_voltage": "V",
+        "co": "ppm",
+        "co2": "ppm",
+        "consumption": "kWh",
+        "current": "A",
+        "dewpoint": "°C",
+        "fire_temperature": "°C",
+        "frequency": "Hz",
+        "heat": "°C",
+        "humidity": "%",
+        "latency": "ms",
+        "motion": "%",
+        "people_distance": "cm",
+        "pressure": "hPa",
+        "rcm_ac": "mA",
+        "rcm_dc": "mA",
+        "reactive_power": "VAr",
+        "signal_strength": "dBm",
+        "synchronicity": "%",
+        "temperature": "°C",
+        "voltage": "V"
+      },
+      "devices": [
+        {
+          "id": 5,
+          "uuid": "cc8a8921-d80b-4b71-bea3-a466b67505dc",
+          "name": "Kentix AlarmManager",
+          "type": 101,
+          "serialnumber": "8002003380013",
+          "version": "08.00.08 B00922",
+          "device_id": null,
+          "group_id": 1,
+          "address": "10.10.10.102",
+          "mac_address": "70:82:0e:12:07:22",
+          "is_satellite": null,
+          "measurements": {
+            "humidity": {
+              "min": "10",
+              "max": "70",
+              "value": "25.9",
+              "assignment": "always-active",
+              "status": "ok"
+            },
+            "vibration": {
+              "value": null,
+              "assignment": "off",
+              "status": "inactive"
+            },
+            "temperature": {
+              "min": "10",
+              "max": "30",
+              "assignment": "always-active",
+              "value": "27.9",
+              "status": "ok"
+            },
+            "dewpoint": {
+              "hysteresis": "2",
+              "assignment": "always-active",
+              "value": "6.5",
+              "status": "ok"
+            },
+            "heat": {
+              "max": null,
+              "assignment": "off",
+              "value": null,
+              "status": "inactive"
+            },
+            "ext_power": {
+              "assignment": "sabotage",
+              "status": "ok"
+            },
+            "connection": {
+              "assignment": "sabotage",
+              "status": "ok",
+              "last_updated": "2023-01-03T13:57:34+0100"
+            }
+          },
+          "active_state": "active",
+          "status": "ok"
+        },
+        {
+          "id": 6,
+          "uuid": "7e96638d-a5e4-40cd-9617-57d2f7f2f51e",
+          "name": "My Acess Manager",
+          "type": 105,
+          "serialnumber": "7002022830071",
+          "version": "08.00.08 B00922",
+          "device_id": 5,
+          "group_id": 1,
+          "address": "10.10.2.83",
+          "mac_address": "70:82:0e:10:cc:ca",
+          "is_satellite": true,
+          "measurements": {
+            "connection": {
+              "assignment": "sabotage",
+              "status": "ok",
+              "last_updated": "2023-01-03T13:57:42+0100"
+            }
+          },
+          "active_state": "active",
+          "status": "ok"
+        },
+        {
+          "id": 7,
+          "uuid": "",
+          "name": "DoorLock 1",
+          "type": 21,
+          "serialnumber": "81700228000cdee9",
+          "version": "2.6.30.0.93",
+          "device_id": 6,
+          "group_id": 1,
+          "address": "30",
+          "mac_address": "",
+          "is_satellite": null,
+          "measurements": {
+            "connection": {
+              "status": "ok",
+              "assignment": "off",
+              "last_updated": "1970-01-01T01:00:00+0100"
+            }
+          },
+          "active_state": "active",
+          "status": "ok"
+        },
+        {
+          "id": 8,
+          "uuid": "a1ae4a83-5a64-4b43-9808-ae13a13ee88c",
+          "name": "My KMS",
+          "type": 110,
+          "serialnumber": "2012033140255",
+          "version": "08.00.08 B00922",
+          "device_id": 5,
+          "group_id": 1,
+          "address": "10.10.10.104",
+          "mac_address": "70:82:0e:12:28:cc",
+          "is_satellite": true,
+          "measurements": {
+            "humidity": {
+              "min": "10",
+              "max": "80",
+              "assignment": "always-active",
+              "value": "22.0",
+              "status": "ok"
+            },
+            "motion": {
+              "assignment": "off",
+              "value": null,
+              "status": "inactive"
+            },
+            "vibration": {
+              "assignment": "off",
+              "value": null,
+              "status": "inactive"
+            },
+            "air_quality": {
+              "max": 30,
+              "assignment": "off",
+              "value": null,
+              "status": "inactive"
+            },
+            "fire_air_quality": {
+              "max": 40,
+              "assignment": "always-active",
+              "value": 10,
+              "status": "ok"
+            },
+            "people_distance": {
+              "min": 1000,
+              "assignment": "off",
+              "value": null,
+              "status": "inactive"
+            },
+            "people_count": {
+              "max": 10,
+              "assignment": "off",
+              "value": null,
+              "status": "inactive"
+            },
+            "co2": {
+              "max": 1000,
+              "assignment": "off",
+              "value": null,
+              "status": "inactive"
+            },
+            "temperature": {
+              "min": "10",
+              "max": "30",
+              "value": "29.9",
+              "assignment": "always-active",
+              "status": "ok"
+            },
+            "dewpoint": {
+              "hysteresis": "2",
+              "value": "5.9",
+              "assignment": "always-active",
+              "status": "ok"
+            },
+            "fire_temperature": {
+              "max": "100",
+              "value": "25.8",
+              "assignment": "always-active",
+              "status": "ok"
+            },
+            "heat": {
+              "max": "10",
+              "value": "0.0",
+              "assignment": "always-active",
+              "status": "ok"
+            },
+            "co": {
+              "value": "0",
+              "assignment": "always-active",
+              "status": "ok"
+            },
+            "connection": {
+              "status": "ok",
+              "assignment": "system",
+              "last_updated": "2023-01-03T13:57:42+0100"
+            }
+          },
+          "active_state": "active",
+          "status": "ok"
+        }
+      ],
+      "ios": [],
+      "alarmgroups": [
+        {
+          "id": 1,
+          "uuid": "cde54e6f-04da-467c-b178-5a08a3d79773",
+          "sort_index": 1,
+          "name": "Alarmzone",
+          "group_id": 4,
+          "active_warnings": {
+            "armed-active": {
+              "pending": 0,
+              "quitable": 0
+            },
+            "always-active": {
+              "pending": 0,
+              "quitable": 0
+            },
+            "fire": {
+              "pending": 0,
+              "quitable": 0
+            },
+            "sabotage": {
+              "pending": 0,
+              "quitable": 0
+            },
+            "system": {
+              "pending": 0,
+              "quitable": 0
+            }
+          },
+          "device_count": 0,
+          "armed": false,
+          "maintenance": "inactive",
+          "maintenance_start_at": "",
+          "status": "ok",
+          "active_pre_alarms": 0,
+          "active_alarms": {
+            "armed-active": {
+              "pending": 0,
+              "quitable": 0
+            },
+            "always-active": {
+              "pending": 0,
+              "quitable": 0
+            },
+            "fire": {
+              "pending": 0,
+              "quitable": 0
+            },
+            "sabotage": {
+              "pending": 0,
+              "quitable": 0
+            },
+            "system": {
+              "pending": 0,
+              "quitable": 0
+            }
+          },
+          "maintenance_stop_at": "",
+          "inactive_device_count": 0
+        },
+        {
+          "id": 2,
+          "uuid": "31236b16-f9f5-4627-9ad6-52317b1bae64",
+          "sort_index": 2,
+          "name": "Alarmzone2",
+          "group_id": 4,
+          "active_warnings": {
+            "armed-active": {
+              "pending": 0,
+              "quitable": 0
+            },
+            "always-active": {
+              "pending": 0,
+              "quitable": 0
+            },
+            "fire": {
+              "pending": 0,
+              "quitable": 0
+            },
+            "sabotage": {
+              "pending": 0,
+              "quitable": 0
+            },
+            "system": {
+              "pending": 0,
+              "quitable": 0
+            }
+          },
+          "device_count": 0,
+          "armed": false,
+          "maintenance": "inactive",
+          "maintenance_start_at": "",
+          "status": "ok",
+          "active_pre_alarms": 0,
+          "active_alarms": {
+            "armed-active": {
+              "pending": 0,
+              "quitable": 0
+            },
+            "always-active": {
+              "pending": 0,
+              "quitable": 0
+            },
+            "fire": {
+              "pending": 0,
+              "quitable": 0
+            },
+            "sabotage": {
+              "pending": 0,
+              "quitable": 0
+            },
+            "system": {
+              "pending": 0,
+              "quitable": 0
+            }
+          },
+          "maintenance_stop_at": "",
+          "inactive_device_count": 0
+        },
+        {
+          "id": 3,
+          "uuid": "7d490ff2-bcc2-42f6-894c-d913bb57c2e8",
+          "sort_index": 1,
+          "name": "System",
+          "group_id": null,
+          "active_warnings": {
+            "armed-active": {
+              "pending": 0,
+              "quitable": 0
+            },
+            "always-active": {
+              "pending": 0,
+              "quitable": 0
+            },
+            "fire": {
+              "pending": 0,
+              "quitable": 0
+            },
+            "sabotage": {
+              "pending": 0,
+              "quitable": 0
+            },
+            "system": {
+              "pending": 0,
+              "quitable": 0
+            }
+          },
+          "device_count": 0,
+          "armed": false,
+          "maintenance": "inactive",
+          "maintenance_start_at": "",
+          "status": "ok",
+          "active_pre_alarms": 0,
+          "active_alarms": {
+            "armed-active": {
+              "pending": 0,
+              "quitable": 0
+            },
+            "always-active": {
+              "pending": 0,
+              "quitable": 0
+            },
+            "fire": {
+              "pending": 0,
+              "quitable": 0
+            },
+            "sabotage": {
+              "pending": 0,
+              "quitable": 0
+            },
+            "system": {
+              "pending": 0,
+              "quitable": 0
+            }
+          },
+          "maintenance_stop_at": "",
+          "inactive_device_count": 0
+        },
+        {
+          "id": 4,
+          "uuid": "2e5ed432-b92f-4324-b98b-bce99ba57f0c",
+          "sort_index": 1,
+          "name": "Building",
+          "group_id": 3,
+          "active_warnings": {
+            "armed-active": {
+              "pending": 0,
+              "quitable": 0
+            },
+            "always-active": {
+              "pending": 0,
+              "quitable": 0
+            },
+            "fire": {
+              "pending": 0,
+              "quitable": 0
+            },
+            "sabotage": {
+              "pending": 0,
+              "quitable": 0
+            },
+            "system": {
+              "pending": 0,
+              "quitable": 0
+            }
+          },
+          "device_count": 0,
+          "armed": false,
+          "maintenance": "inactive",
+          "maintenance_start_at": "",
+          "status": "ok",
+          "active_pre_alarms": 0,
+          "active_alarms": {
+            "armed-active": {
+              "pending": 0,
+              "quitable": 0
+            },
+            "always-active": {
+              "pending": 0,
+              "quitable": 0
+            },
+            "fire": {
+              "pending": 0,
+              "quitable": 0
+            },
+            "sabotage": {
+              "pending": 0,
+              "quitable": 0
+            },
+            "system": {
+              "pending": 0,
+              "quitable": 0
+            }
+          },
+          "maintenance_stop_at": "",
+          "inactive_device_count": 0
+        }
+      ],
+      "racks": []
+    }
+  }
+}

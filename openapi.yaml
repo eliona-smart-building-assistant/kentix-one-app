@@ -1,0 +1,85 @@
+openapi: 3.0.3
+
+#  This file is part of the eliona project.
+#  Copyright © 2022 LEICOM iTEC AG. All Rights Reserved.
+#  ______ _ _
+# |  ____| (_)
+# | |__  | |_  ___  _ __   __ _
+# |  __| | | |/ _ \| '_ \ / _` |
+# | |____| | | (_) | | | | (_| |
+# |______|_|_|\___/|_| |_|\__,_|
+#
+#  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
+#  BUT NOT LIMITED  TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+#  NON INFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+#  DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+#  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+info:
+  version: 1.0.0
+  title: App template API
+  description: API to access and configure the app template
+externalDocs:
+  description: Find out more about the app template
+  url: https://github.com/eliona-smart-building-assistant/app-template
+servers:
+  - url: http://template/v1
+
+tags:
+  - name: Configuration
+    description: Configuration stuff for app template
+    externalDocs:
+      url: https://github.com/eliona-smart-building-assistant/app-template
+
+paths:
+  /examples:
+    get:
+      tags:
+        - Configuration
+      summary: Get example configuration
+      description: Gets information about example.
+      operationId: getExamples
+      responses:
+        200:
+          description: Successfully returned example configuration
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Example'
+    post:
+      tags:
+        - Configuration
+      summary: Creates an example configuration
+      description: Creates an example configuration.
+      operationId: postExample
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Example'
+      responses:
+        201:
+          description: Successfully created an example configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Example'
+
+components:
+  schemas:
+
+    Example:
+      type: object
+      description: Simply a example configuration
+      properties:
+        id:
+          type: integer
+          format: int64
+          description: A id identifying the example configuration
+          readOnly: true
+          nullable: true
+        config:
+          type: string
+          description: Configuration data for example

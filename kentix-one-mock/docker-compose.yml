@@ -1,0 +1,34 @@
+version: "3.7"
+
+networks:
+  kentix-mock-network:
+    name: kentix-mock-network
+
+services:
+  access-manager-mock:
+    container_name: access-manager-mock
+    image: dotronglong/faker:stable
+    volumes:
+      - ./kxp:/app/mocks
+    networks:
+      kentix-mock-network:
+    ports:
+      - "3031:3030"
+  alarm-manager-mock:
+    container_name: alarm-manager-mock
+    image: dotronglong/faker:stable
+    volumes:
+      - ./kam:/app/mocks
+    networks:
+      kentix-mock-network:
+    ports:
+      - "3032:3030"
+  multi-sensor-mock:
+    container_name: multi-sensor-mock
+    image: dotronglong/faker:stable
+    volumes:
+      - ./kms:/app/mocks
+    networks:
+      kentix-mock-network:
+    ports:
+      - "3033:3030"

@@ -1,0 +1,11 @@
+{
+  "displayName": {
+    "en": "App template",
+    "de": "App Vorlage"
+  },
+  "description": {
+    "en": "This template can be used to create an app stub for an Eliona environment.",
+    "de": "Diese Vorlage kann verwendet werden um eine App für Eliona zu erstellen."
+  },
+  "useEnvironment": [ "CONNECTION_STRING", "API_ENDPOINT", "API_TOKEN" ]
+}
