@@ -1,0 +1,24 @@
+parameters:
+  - name: deploymentEnvironment
+    type: string
+    default: experimental
+  - name: repository
+    type: string
+  - name: deploymentRepository
+    type: string
+
+name: $(Build.DefinitionName)_${{ parameters.deploymentEnvironment }}_$(Date:yyyyMMdd)
+trigger: none
+
+resources:
+  repositories:
+    - repository: pipeline
+      type: git
+      name: utils/pipeline
+
+extends:
+  template: 'jobs/deployment-from-docker-hub.yml@pipeline'
+  parameters:
+    deploymentEnvironment: ${{ parameters.deploymentEnvironment }}
+    repository: ${{ parameters.repository }}
+    deploymentRepository: ${{ parameters.deploymentRepository }}
