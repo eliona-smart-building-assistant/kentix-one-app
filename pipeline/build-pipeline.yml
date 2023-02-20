@@ -1,0 +1,25 @@
+#  ______ _ _
+# |  ____| (_)
+# | |__  | |_  ___  _ __   __ _
+# |  __| | | |/ _ \| '_ \ / _` |
+# | |____| | | (_) | | | | (_| |
+# |______|_|_|\___/|_| |_|\__,_|
+#
+name: $(Build.DefinitionName)_$(Build.SourceBranchName)_$(Date:yyyyMMdd)
+
+trigger:
+  batch: true
+  tags:
+    include:
+      - 'v*'
+  branches:
+    include:
+      - develop
+
+resources:
+  repositories:
+    - repository: pipeline
+      type: git
+      name: utils/pipeline
+stages:
+  - template: "stages/build/stage-build-github.yml@pipeline"
