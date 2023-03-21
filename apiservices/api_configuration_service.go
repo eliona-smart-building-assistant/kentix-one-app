@@ -10,9 +10,10 @@
 package apiservices
 
 import (
+	"kentix-one/apiserver"
+
 	"context"
 	"errors"
-	"hailo/apiserver"
 	"net/http"
 )
 
