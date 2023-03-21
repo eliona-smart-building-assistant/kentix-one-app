@@ -50,13 +50,13 @@ func (c *VersionApiController) Routes() Routes {
 		{
 			"GetOpenAPI",
 			strings.ToUpper("Get"),
-			"/version/openapi.json",
+			"/v1/version/openapi.json",
 			c.GetOpenAPI,
 		},
 		{
 			"GetVersion",
 			strings.ToUpper("Get"),
-			"/version",
+			"/v1/version",
 			c.GetVersion,
 		},
 	}

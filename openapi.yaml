@@ -22,6 +22,8 @@ info:
 externalDocs:
   description: Find out more about the Kentix One app
   url: https://github.com/eliona-smart-building-assistant/kentix-one-app
+servers:
+  - url: http://kentix-one/v1
 
 tags:
   - name: Configuration

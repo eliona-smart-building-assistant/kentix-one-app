@@ -4,16 +4,17 @@ go 1.18
 
 require (
 	github.com/eliona-smart-building-assistant/go-eliona v1.9.5
+	github.com/eliona-smart-building-assistant/go-eliona-api-client/v2 v2.4.8
 	github.com/eliona-smart-building-assistant/go-utils v1.0.18
 	github.com/friendsofgo/errors v0.9.2
 	github.com/gorilla/mux v1.8.0
 	github.com/volatiletech/null/v8 v8.1.2
 	github.com/volatiletech/sqlboiler/v4 v4.14.1
 	github.com/volatiletech/strmangle v0.0.4
+	gopkg.in/yaml.v3 v3.0.1
 )
 
 require (
-	github.com/eliona-smart-building-assistant/go-eliona-api-client/v2 v2.4.8 // indirect
 	github.com/ericlagergren/decimal v0.0.0-20211103172832-aca2edc11f73 // indirect
 	github.com/gofrs/uuid v4.2.0+incompatible // indirect
 	github.com/jackc/chunkreader/v2 v2.0.1 // indirect
