@@ -1,5 +1,5 @@
-output   = "db/template"
-pkgname  = "dbtemplate"
+output   = "appdb"
+pkgname  = "appdb"
 add-global-variants = true
 wipe     = true
 no-tests = true
@@ -11,10 +11,10 @@ host   = "localhost"
 port   = 5432
 user   = "postgres"
 pass   = "secret"
-schema = "template"
+schema = "kentix_one"
 sslmode = "disable"
 whitelist = [
-    "example_table"
+    "configuration", "device"
 ]
 
 [[types]]
