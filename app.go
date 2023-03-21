@@ -38,6 +38,8 @@ func doAnything() {
 func listenApiRequests() {
 	err := http.ListenAndServe(":"+common.Getenv("API_SERVER_PORT", "3000"), apiserver.NewRouter(
 		apiserver.NewConfigurationApiController(apiservices.NewConfigurationApiService()),
+		apiserver.NewVersionApiController(apiservices.NewVersionApiService()),
+		apiserver.NewCustomizationApiController(apiservices.NewCustomizationApiService()),
 	))
-	log.Fatal("Hailo", "Error in API Server: %v", err)
+	log.Fatal("main", "API server: %v", err)
 }

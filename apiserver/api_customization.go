@@ -52,13 +52,13 @@ func (c *CustomizationApiController) Routes() Routes {
 		{
 			"GetDashboardTemplateByName",
 			strings.ToUpper("Get"),
-			"/dashboard-templates/{dashboard-template-name}",
+			"/v1/dashboard-templates/{dashboard-template-name}",
 			c.GetDashboardTemplateByName,
 		},
 		{
 			"GetDashboardTemplateNames",
 			strings.ToUpper("Get"),
-			"/dashboard-template-names",
+			"/v1/dashboard-template-names",
 			c.GetDashboardTemplateNames,
 		},
 	}
