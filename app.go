@@ -16,11 +16,12 @@
 package main
 
 import (
+	"kentix-one/apiserver"
+	"kentix-one/apiservices"
+	"net/http"
+
 	"github.com/eliona-smart-building-assistant/go-utils/common"
 	"github.com/eliona-smart-building-assistant/go-utils/log"
-	"hailo/apiserver"
-	"hailo/apiservices"
-	"net/http"
 )
 
 // doAnything is the main app function which is called periodically
