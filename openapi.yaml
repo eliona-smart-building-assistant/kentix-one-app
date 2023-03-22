@@ -17,69 +17,264 @@ openapi: 3.0.3
 
 info:
   version: 1.0.0
-  title: App template API
-  description: API to access and configure the app template
+  title: Kentix One app API
+  description: API to access and configure the Kentix One app
 externalDocs:
-  description: Find out more about the app template
-  url: https://github.com/eliona-smart-building-assistant/app-template
+  description: Find out more about the Kentix One app
+  url: https://github.com/eliona-smart-building-assistant/kentix-one-app
 servers:
-  - url: http://template/v1
+  - url: http://kentix-one/v1
 
 tags:
   - name: Configuration
-    description: Configuration stuff for app template
+    description: Configure access to Kentix One devices
     externalDocs:
-      url: https://github.com/eliona-smart-building-assistant/app-template
+      url: https://github.com/eliona-smart-building-assistant/kentix-one-app
 
 paths:
-  /examples:
+  /configs:
     get:
       tags:
         - Configuration
-      summary: Get example configuration
-      description: Gets information about example.
-      operationId: getExamples
+      summary: Get all Kentix One configurations
+      description: Gets information about all Kentix One configurations
+      operationId: getConfigurations
       responses:
-        200:
-          description: Successfully returned example configuration
+        "200":
+          description: Successfully returned configured Kentix One configurations
           content:
             application/json:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Example'
+                  $ref: '#/components/schemas/Configuration'
     post:
       tags:
         - Configuration
-      summary: Creates an example configuration
-      description: Creates an example configuration.
-      operationId: postExample
+      summary: Creates a Kentix One configuration
+      description: Creates a Kentix One configuration.
+      operationId: postConfiguration
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Example'
+              $ref: '#/components/schemas/Configuration'
       responses:
-        201:
-          description: Successfully created an example configuration
+        "201":
+          description: Successfully created a new Kentix One configuration
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Example'
+                $ref: '#/components/schemas/Configuration'
+  /configs/{config-id}:
+    get:
+      tags:
+        - Configuration
+      summary: Get Kentix One configuration
+      description: Gets information about the Kentix One configuration with the given id
+      parameters:
+        - $ref: '#/components/parameters/config-id'
+      operationId: getConfigurationById
+      responses:
+        "200":
+          description: Successfully returned Kentix One configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Configuration'
+        "400":
+          description: Bad request
+    put:
+      tags:
+        - Configuration
+      summary: Updates a Kentix One configuration
+      description: Updates a Kentix One configuration
+      parameters:
+        - $ref: '#/components/parameters/config-id'
+      operationId: putConfigurationById
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Configuration'
+      responses:
+        "200":
+          description: Successfully updated a Kentix One configuration
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Configuration'
+    delete:
+      tags:
+        - Configuration
+      summary: Deletes a Kentix One configuration
+      description: Removes information about the Kentix One configuration with the given id
+      parameters:
+        - $ref: '#/components/parameters/config-id'
+      operationId: deleteConfigurationById
+      responses:
+        "204":
+          description: Successfully deleted configured Kentix One configuration
+        "400":
+          description: Bad request
+
+  /dashboard-template-names:
+    get:
+      tags:
+        - Customization
+      summary: List available dashboard templates
+      description: Delivers all names for which the app provides dashboard templates
+      operationId: getDashboardTemplateNames
+      responses:
+        "200":
+          description: Successfully returned list of template names
+          content:
+            application/json:
+              schema:
+                description: Names of available dashboard templates
+                type: array
+                items:
+                  description: Name of the dashboard template
+                  type: string
+
+  /dashboard-templates/{dashboard-template-name}:
+    get:
+      tags:
+        - Customization
+      summary: Get a full dashboard template
+      description: Delivers a dashboard template that can be assigned to users in Eliona
+      externalDocs:
+        description: The API to assign the dashboard to users in Eliona (see POST /dashboards endpoint)
+        url: https://github.com/eliona-smart-building-assistant/eliona-api
+      operationId: getDashboardTemplateByName
+      parameters:
+        - name: dashboard-template-name
+          in: path
+          description: Name of the dashboard template
+          required: true
+          schema:
+            type: string
+            example: Kentix One devices
+        - name: projectId
+          in: query
+          description: Define the project the dashboard should be
+          required: true
+          schema:
+            type: string
+            example: 99
+      responses:
+        "200":
+          description: Successfully returned dashboard template
+          content:
+            application/json:
+              schema:
+                $ref: 'https://raw.githubusercontent.com/eliona-smart-building-assistant/eliona-api/main/openapi.yaml#/components/schemas/Dashboard'
+        "404":
+          description: Template name not found
+
+  /version:
+    get:
+      summary: Version of the API
+      description: Gets information about the API version.
+      operationId: getVersion
+      tags:
+        - Version
+      responses:
+        "200":
+          description: Successfully returned the API version.
+          content:
+            application/json:
+              schema:
+                type: object
+  /version/openapi.json:
+    get:
+      summary: OpenAPI specification for this API version
+      description: Gets specification for this API version as an openapi.json file.
+      operationId: getOpenAPI
+      tags:
+        - Version
+      responses:
+        "200":
+          description: Successfully returned the openapi.json file.
+          content:
+            application/json:
+              schema:
+                type: object
 
 components:
-  schemas:
+  parameters:
+    config-id:
+      name: config-id
+      in: path
+      description: The ID of the Kentix One Config
+      example: 4711
+      required: true
+      schema:
+        type: integer
+        format: int64
+        example: 4711
 
-    Example:
+  schemas:
+    Configuration:
       type: object
-      description: Simply a example configuration
+      description: Each configuration defines access to one Kentix One device.
       properties:
         id:
           type: integer
           format: int64
-          description: A id identifying the example configuration
+          description: Internal identifier for the configured device (created automatically). This identifier have to use always if you remove or update existing configured endpoints.
           readOnly: true
           nullable: true
-        config:
+        address:
           type: string
-          description: Configuration data for example
+          format: string
+          description: IP or hostname of the Kentix One device
+          example: 10.10.10.101
+        apiKey:
+          type: string
+          description: Kentix One API key
+        enable:
+          type: boolean
+          description: Flag to enable or disable fetching from this device
+          default: true
+          nullable: true
+        refreshInterval:
+          type: integer
+          description: Interval in seconds for collecting data from device
+          default: 60
+        requestTimeout:
+          type: integer
+          description: Timeout in seconds
+          default: 120
+          nullable: true
+        active:
+          type: boolean
+          readOnly: true
+          description: Set to `true` by the app when running and to `false` when app is stopped
+          nullable: true
+        projectIDs:
+          type: array
+          description: List of Eliona project ids for which this device should collect data. For each project id all smart devices are automatically created as an asset in Eliona. The mapping between Eliona is stored as an asset mapping in the Kentix One app.
+          nullable: true
+          items:
+            type: string
+          example:
+            - "42"
+            - "99"
+
+    Device:
+      type: object
+      description: Each device represents one asset in Eliona.
+      properties:
+        projectID:
+          type: string
+          description: The project ID this asset is assigned to
+        configuration:
+          $ref: '#/components/schemas/Configuration'
+        assetID:
+          type: integer
+          description: Eliona asset ID
+          nullable: true
+        serialNumber:
+          type: string
+          description: Serial number reported by the Kentix One device
