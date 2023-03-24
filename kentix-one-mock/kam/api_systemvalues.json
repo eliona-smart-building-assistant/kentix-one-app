@@ -91,7 +91,7 @@
         {
           "id": 6,
           "uuid": "7e96638d-a5e4-40cd-9617-57d2f7f2f51e",
-          "name": "My Acess Manager",
+          "name": "My Access Manager",
           "type": 105,
           "serialnumber": "7002022830071",
           "version": "08.00.08 B00922",
@@ -195,9 +195,9 @@
             "temperature": {
               "min": "10",
               "max": "30",
-              "value": "29.9",
+              "value": "30.1",
               "assignment": "always-active",
-              "status": "ok"
+              "status": "alarm"
             },
             "dewpoint": {
               "hysteresis": "2",

@@ -3,12 +3,19 @@ This [Eliona app for Kentix One](https://github.com/eliona-smart-building-assist
 
 This app collects data from Kentix One devices such as AccessManager, AlarmManager and MultiSensor and passes their data to Eliona. Each device corresponds to an asset in an Eliona project.
 
-// todo: isn't there a better discovery process?
-For AccessManager the app discovers all connected smart doorlocks and allows access to their status in Eliona.
-
 ## Configuration
 
 The app needs environment variables and database tables for configuration. To edit the database tables the app provides an own API access.
+
+### Kentix devices setup ###
+
+The Kentix One devices should be interconnected. One device (i.e. AlarmManager) should be in "Manager" mode and other devices should be in "Satellite" mode and connected to the Manager (which is done in the Kentix device UI configuration).
+
+The user then sets the address of the Manager as one Configuration, and the Manager's Satellites are then discovered automatically by the app.
+
+The app can have multiple Configurations - for multiple Managers.
+
+For communication with Kentix devices, the app needs an API key. The key is set in the Kentix device UI configuration. The app then passes it as a bearer token in Authorization header.
 
 ### Registration in Eliona ###
 
@@ -16,7 +23,7 @@ To start and initialize an app in an Eliona environment, the app has to register
 
 The registration could be done using the reset script.
 
-### Environment variables
+### Environment variables ###
 
 - `APPNAME`: must be set to `kentix_one`. Some resources use this name to identify the app inside an Eliona environment.
 
@@ -32,7 +39,7 @@ The registration could be done using the reset script.
 
 ### Database tables ###
 
-The app requires configuration data that remains in the database. To do this, the app creates its own database schema `kentix_one` during initialization. To modify and handle the configuration data the app provides an API access. Have a look at the [API specification](https://eliona-smart-building-assistant.github.io/open-api-docs/?https://raw.githubusercontent.com/eliona-smart-building-assistant/kentix-app/develop/openapi.yaml) how the configuration tables should be used.
+The app requires configuration data that remains in the database. To do this, the app creates its own database schema `kentix_one` during initialization. To modify and handle the configuration data the app provides an API access. Have a look at the [API specification](https://eliona-smart-building-assistant.github.io/open-api-docs/?https://raw.githubusercontent.com/eliona-smart-building-assistant/kentix-one-app/develop/openapi.yaml) how the configuration tables should be used.
 
 - `kentix_one.configuration`: Configurations for individual Kentix One devices. Editable by API.
 
@@ -49,7 +56,7 @@ There is 1:N relationship between configuration and device (i.e. one Configurati
 
 The Kentix One app provides its own API to access configuration data and other functions. The full description of the API is defined in the `openapi.yaml` OpenAPI definition file.
 
-- [API Reference](https://eliona-smart-building-assistant.github.io/open-api-docs/?https://raw.githubusercontent.com/eliona-smart-building-assistant/kentix-app/develop/openapi.yaml) shows details of the API
+- [API Reference](https://eliona-smart-building-assistant.github.io/open-api-docs/?https://raw.githubusercontent.com/eliona-smart-building-assistant/kentix-one-app/develop/openapi.yaml) shows details of the API
 
 **Generation**: to generate api server stub see Generation section below.
 
@@ -62,6 +69,10 @@ The data is written for each Kentix One device, structured into different subtyp
 
 - `Input`: Current values reported by Kentix One sensors (i.e. MultiSensor readings).
 - `Info`: Static data which specifies a Kentix One device like address and firmware info.
+
+### Continuous asset creation
+
+todo
 
 ## Tools
 
@@ -82,3 +93,11 @@ For the database access [SQLBoiler](https://github.com/volatiletech/sqlboiler) i
 .\generate-db.cmd # Windows
 ./generate-db.sh # Linux
 ```
+
+### Mock Kentix One devices ###
+`kentix-one-mock` folder contains mock endpoints implementation:
+- `access-manager`: `localhost:3031`
+- `alarm-manager`: `localhost:3032`
+- `multi-sensor`: `localhost:3033`
+
+The [Kentix API documentation](https://kentix.com/transfer/smartapi/alarmmanager) roughly corresponds to the device APIs, but there are subtle differences (like having different data type for doorlock battery level). Kentix promised to document the Kentix One API in 2023.
