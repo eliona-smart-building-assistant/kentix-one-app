@@ -1,0 +1,169 @@
+{
+	"attributes": [
+		{
+			"enable": true,
+			"name": "name",
+			"subtype": "info",
+			"translation": {
+				"de": "Name",
+				"en": "Name"
+			},
+			"type": "device-info"
+		},
+		{
+			"enable": true,
+			"name": "ip_address",
+			"subtype": "info",
+			"translation": {
+				"de": "IP Addresse",
+				"en": "IP Address"
+			},
+			"type": "device-info"
+		},
+		{
+			"enable": true,
+			"name": "mac_address",
+			"subtype": "info",
+			"translation": {
+				"de": "MAC Addresse",
+				"en": "MAC Address"
+			},
+			"type": "device-info"
+		},
+		{
+			"enable": true,
+			"name": "firmware_version",
+			"subtype": "info",
+			"translation": {
+				"de": "Firmware version",
+				"en": "Firmware version"
+			},
+			"type": "device-info"
+		},
+		{
+			"enable": true,
+			"name": "last_updated",
+			"subtype": "status",
+			"translation": {
+				"de": "Zuletzt aktualisiert",
+				"en": "Last updated"
+			},
+			"type": "device-status"
+		},
+
+		{
+			"enable": true,
+			"name": "temperature",
+			"subtype": "input",
+			"translation": {
+				"de": "Temperatur",
+				"en": "Temperature"
+			},
+			"type": "temperature",
+			"unit": "˚C"
+		},
+		{
+			"enable": true,
+			"name": "humidity",
+			"subtype": "input",
+			"translation": {
+				"de": "Luftfeuchtigkeit",
+				"en": "Humidity"
+			},
+			"type": "humidity",
+			"unit": "%"
+		},
+		{
+			"enable": true,
+			"name": "dew_point",
+			"subtype": "input",
+			"translation": {
+				"de": "Taupunkt",
+				"en": "Dew point"
+			},
+			"type": "humidity",
+			"unit": "˚C"
+		},
+		{
+			"enable": true,
+			"name": "air_quality",
+			"subtype": "input",
+			"translation": {
+				"de": "Luftqualität",
+				"en": "Air quality"
+			},
+			"type": "air_quality"
+		},
+		{
+			"enable": true,
+			"name": "co2",
+			"subtype": "input",
+			"translation": {
+				"de": "CO₂",
+				"en": "CO₂"
+			},
+			"type": "co2",
+			"unit": "ppm"
+		},
+		{
+			"enable": true,
+			"name": "co",
+			"subtype": "input",
+			"translation": {
+				"de": "CO",
+				"en": "CO"
+			},
+			"type": "weather",
+			"unit": "ppm"
+		},
+		{
+			"enable": true,
+			"name": "heat",
+			"subtype": "input",
+			"translation": {
+				"de": "Hitze",
+				"en": "Heat"
+			},
+			"type": "temperature"
+		},
+		{
+			"enable": true,
+			"name": "motion",
+			"subtype": "input",
+			"translation": {
+				"de": "Bewegung",
+				"en": "Motion"
+			},
+			"type": "motion"
+		},
+		{
+			"enable": true,
+			"name": "vibration",
+			"subtype": "input",
+			"translation": {
+				"de": "Vibration",
+				"en": "Vibration"
+			},
+			"type": "motion"
+		},
+		{
+			"enable": true,
+			"name": "people_count",
+			"subtype": "input",
+			"translation": {
+				"de": "Menschen zählen",
+				"en": "People count"
+			},
+			"type": "people-count"
+		}
+	],
+	"custom": true,
+	"icon": "environment",
+	"name": "kentix_one_multi_sensor",
+	"translation": {
+		"de": "KentixONE MultiSensor",
+		"en": "KentixONE MultiSensor"
+	},
+	"urldoc": "https://kentix.com/transfer/smartapi/accessmanager#tag/measurements/paths/~1api~1systemvalues/get",
+	"vendor": "Kentix"
+}

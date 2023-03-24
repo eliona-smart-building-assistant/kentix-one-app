@@ -1,0 +1,44 @@
+{
+	"attributes": [
+		{
+			"enable": true,
+			"name": "serial_number",
+			"subtype": "info",
+			"translation": {
+				"de": "Seriennummer",
+				"en": "Serial number"
+			},
+			"type": "device-info"
+		},
+		{
+			"enable": true,
+			"name": "name",
+			"subtype": "info",
+			"translation": {
+				"de": "Name",
+				"en": "Name"
+			},
+			"type": "device-info"
+		},
+
+		{
+			"enable": true,
+			"name": "battery",
+			"subtype": "input",
+			"translation": {
+				"de": "Batterie",
+				"en": "Battery"
+			},
+			"type": "battery-voltage"
+		}
+	],
+	"custom": true,
+	"icon": "closable",
+	"name": "kentix_one_doorlock",
+	"translation": {
+		"de": "KentixONE Türschloss",
+		"en": "KentixONE Doorlock"
+	},
+	"urldoc": "https://kentix.com/transfer/smartapi/alarmmanager#tag/doorlocklist/paths/~1api~1doorlocks/get",
+	"vendor": "Kentix"
+}

@@ -1,0 +1,53 @@
+{
+  "request": {
+    "method": "GET",
+    "path": "/api/doorlocks"
+  },
+  "response": {
+    "body": {
+      "data": [
+        {
+          "id": 7,
+          "device_id": 6,
+          "is_active": true,
+          "type": 21,
+          "name": "DoorLock 1",
+          "batterylevel": 3,
+          "group_id": null
+        }
+      ],
+      "links": {
+        "first": "http:\/\/localhost:3032\/api\/doorlocks?page=1",
+        "last": "http:\/\/localhost:3032\/api\/doorlocks?page=1",
+        "prev": null,
+        "next": null
+      },
+      "meta": {
+        "current_page": 1,
+        "from": 1,
+        "last_page": 1,
+        "links": [
+          {
+            "url": null,
+            "label": "pagination.previous",
+            "active": false
+          },
+          {
+            "url": "http:\/\/localhost:3032\/api\/doorlocks?page=1",
+            "label": "1",
+            "active": true
+          },
+          {
+            "url": null,
+            "label": "pagination.next",
+            "active": false
+          }
+        ],
+        "path": "http:\/\/localhost:3032\/api\/doorlocks",
+        "per_page": 25,
+        "to": 1,
+        "total": 1
+      }
+    }
+  }
+}

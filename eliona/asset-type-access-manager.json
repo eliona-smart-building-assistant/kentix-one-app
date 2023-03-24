@@ -1,0 +1,53 @@
+{
+	"attributes": [
+		{
+			"enable": true,
+			"name": "name",
+			"subtype": "info",
+			"translation": {
+				"de": "Name",
+				"en": "Name"
+			},
+			"type": "device-info"
+		},
+		{
+			"enable": true,
+			"name": "ip_address",
+			"subtype": "info",
+			"translation": {
+				"de": "IP Addresse",
+				"en": "IP Address"
+			},
+			"type": "device-info"
+		},
+		{
+			"enable": true,
+			"name": "mac_address",
+			"subtype": "info",
+			"translation": {
+				"de": "MAC Addresse",
+				"en": "MAC Address"
+			},
+			"type": "device-info"
+		},
+		{
+			"enable": true,
+			"name": "firmware_version",
+			"subtype": "info",
+			"translation": {
+				"de": "Firmware version",
+				"en": "Firmware version"
+			},
+			"type": "device-info"
+		}
+	],
+	"custom": true,
+	"icon": "closable",
+	"name": "kentix_one_access_manager",
+	"translation": {
+		"de": "KentixONE AccessManager",
+		"en": "KentixONE AccessManager"
+	},
+	"urldoc": "https://kentix.com/transfer/smartapi/accessmanager#tag/measurements/paths/~1api~1systemvalues/get",
+	"vendor": "Kentix"
+}

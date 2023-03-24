@@ -16,6 +16,7 @@
 package main
 
 import (
+	"context"
 	"kentix-one/conf"
 	"kentix-one/eliona"
 	"time"
@@ -24,16 +25,25 @@ import (
 	"github.com/eliona-smart-building-assistant/go-utils/common"
 	"github.com/eliona-smart-building-assistant/go-utils/db"
 	"github.com/eliona-smart-building-assistant/go-utils/log"
+	"github.com/volatiletech/sqlboiler/v4/boil"
 )
 
 // The main function starts the app by starting all services necessary for this app and waits
 // until all services are finished.
 func main() {
-	log.Info("Template", "Starting the app.")
+	log.Info("main", "Starting the app.")
+
+	database := db.Database(app.AppName())
+	defer database.Close()
+	boil.SetDB(database)
+
+	if log.Lev() >= log.DebugLevel {
+		boil.DebugMode = true
+		boil.DebugWriter = log.GetWriter(log.DebugLevel, "database")
+	}
 
 	// Necessary to close used init resources, because db.Pool() is used in this app.
 	defer db.ClosePool()
-
 	// Init the app before the first run.
 	app.Init(db.Pool(), app.AppName(),
 		app.ExecSqlFile("conf/init.sql"),
@@ -41,11 +51,16 @@ func main() {
 		eliona.InitEliona,
 	)
 
-	// Starting the service to collect the data for each configured Hailo Smart Hub.
-	common.WaitFor(
-		common.Loop(doAnything, time.Second),
+	common.WaitForWithOs(
+		common.Loop(collectData, time.Second),
 		listenApiRequests,
 	)
 
-	log.Info("Template", "Terminate the app.")
+	// At the end set all configuration inactive
+	_, err := conf.SetAllConfigsInactive(context.Background())
+	if err != nil {
+		log.Error("conf", "setting all configs inactive: %v", err)
+	}
+
+	log.Info("main", "Terminating the app.")
 }
