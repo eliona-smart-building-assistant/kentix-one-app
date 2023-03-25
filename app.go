@@ -16,21 +16,100 @@
 package main
 
 import (
+	"context"
 	"kentix-one/apiserver"
 	"kentix-one/apiservices"
+	"kentix-one/conf"
+	"kentix-one/eliona"
+	"kentix-one/kentix"
 	"net/http"
+	"time"
 
 	"github.com/eliona-smart-building-assistant/go-utils/common"
 	"github.com/eliona-smart-building-assistant/go-utils/log"
 )
 
-// doAnything is the main app function which is called periodically
-func doAnything() {
+func collectData() {
+	configs, err := conf.GetConfigs(context.Background())
+	if err != nil {
+		log.Fatal("conf", "Couldn't read configs from DB: %v", err)
+		return
+	}
+	if len(configs) == 0 {
+		log.Error("conf", "No configs in DB")
+		return
+	}
 
-	//
-	// Todo: implement everything the app should do
-	//
+	for _, config := range configs {
+		// Skip config if disabled and set inactive
+		if !conf.IsConfigEnabled(config) {
+			if conf.IsConfigActive(config) {
+				conf.SetConfigActiveState(context.Background(), config, false)
+			}
+			continue
+		}
 
+		// Signals that this config is active
+		if !conf.IsConfigActive(config) {
+			conf.SetConfigActiveState(context.Background(), config, true)
+			log.Info("conf", "Collecting initialized with Configuration %d:\n"+
+				"Address: %s\n"+
+				"API Key: %s\n"+
+				"Enable: %t\n"+
+				"Refresh Interval: %d\n"+
+				"Request Timeout: %d\n"+
+				"Active: %t\n"+
+				"Project IDs: %v\n",
+				*config.Id,
+				config.Address,
+				config.ApiKey,
+				*config.Enable,
+				config.RefreshInterval,
+				*config.RequestTimeout,
+				*config.Active,
+				*config.ProjectIDs)
+		}
+
+		// Runs the ReadNode. If the current node is currently running, skip the execution
+		// After the execution sleeps the configured timeout. During this timeout no further
+		// process for this config is started to read the data.
+		common.RunOnceWithParam(func(config apiserver.Configuration) {
+			log.Info("main", "Collecting %d started", *config.Id)
+
+			collectDataForConfig(config)
+
+			log.Info("main", "Collecting %d finished", *config.Id)
+
+			time.Sleep(time.Second * time.Duration(config.RefreshInterval))
+		}, config, *config.Id)
+	}
+}
+
+func collectDataForConfig(config apiserver.Configuration) {
+	devices, err := kentix.GetDevices(config)
+	if err != nil {
+		log.Error("kentix", "getting devices info: %v", err)
+		return
+	}
+
+	for _, device := range devices {
+		if err := eliona.CreateAssetsIfNecessary(config, device); err != nil {
+			log.Error("eliona", "creating assets: %v", err)
+			return
+		}
+
+		if err := eliona.UpsertDeviceInfo(config, device); err != nil {
+			log.Error("eliona", "inserting device info: %v", err)
+			return
+		}
+
+		if device.Measurements != nil {
+			if err := eliona.UpsertMultiSensorData(config, *device.Measurements); err != nil {
+				log.Error("eliona", "upserting MultiSensor data: %v", err)
+				return
+			}
+		}
+	}
 }
 
 // listenApiRequests starts an API server and listen for API requests
