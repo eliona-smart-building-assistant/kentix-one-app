@@ -2,11 +2,21 @@
 	"attributes": [
 		{
 			"enable": true,
-			"name": "serial_number",
+			"name": "id",
 			"subtype": "info",
 			"translation": {
-				"de": "Seriennummer",
-				"en": "Serial number"
+				"de": "ID",
+				"en": "ID"
+			},
+			"type": "device-info"
+		},
+		{
+			"enable": true,
+			"name": "device_id",
+			"subtype": "info",
+			"translation": {
+				"de": "Geräte-ID",
+				"en": "Device ID"
 			},
 			"type": "device-info"
 		},
