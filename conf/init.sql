@@ -13,11 +13,11 @@
 --  DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 --  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-create schema if not exists kentix_one;
+create schema if not exists kentixone;
 
 -- Configuration corresponds to one Kentix device
 -- Should be editable by eliona frontend.
-create table if not exists kentix_one.configuration
+create table if not exists kentixone.configuration
 (
 	id               bigserial primary key,
 	address          text,
@@ -31,9 +31,9 @@ create table if not exists kentix_one.configuration
 
 -- Device corresponds to one asset in Eliona
 -- Should be read-only by eliona frontend.
-create table if not exists kentix_one.device
+create table if not exists kentixone.device
 (
-	configuration_id bigserial references kentix_one.configuration(id),
+	configuration_id bigserial references kentixone.configuration(id),
 	project_id       text      not null,
 	serial_number    text      not null,
 	asset_id         integer,
