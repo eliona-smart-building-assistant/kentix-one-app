@@ -11,7 +11,7 @@ host   = "localhost"
 port   = 5432
 user   = "postgres"
 pass   = "secret"
-schema = "kentix_one"
+schema = "kentixone"
 sslmode = "disable"
 whitelist = [
     "configuration", "device"
