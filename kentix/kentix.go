@@ -16,6 +16,7 @@
 package kentix
 
 import (
+	"encoding/json"
 	"fmt"
 	"kentix-one/apiserver"
 	"net/url"
@@ -60,11 +61,11 @@ type Measurements struct {
 }
 
 type MeasurementValue struct {
-	Min        string `json:"min"`
-	Max        string `json:"max"`
-	Assignment string `json:"assignment"`
-	Value      string `json:"value"`
-	Status     string `json:"status"`
+	Min        *jsonAnythingString `json:"min"`
+	Max        *jsonAnythingString `json:"max"`
+	Value      *jsonAnythingString `json:"value"`
+	Assignment string              `json:"assignment"`
+	Status     string              `json:"status"`
 }
 
 func GetDevices(conf apiserver.Configuration) ([]DeviceInfo, error) {
@@ -147,4 +148,31 @@ func fetchDoorlocks(url string, conf apiserver.Configuration) ([]DoorLock, error
 		doorlocks = append(doorlocks, dl...)
 	}
 	return doorlocks, nil
+}
+
+//
+
+// KentixONE API for some reason sends the numeric values sometimes as integer,
+// sometimes float, sometime string. It seems to be non-deterministic, but it
+// certainly is not documented.
+// We don't care about the type they send it in that case, so let's make
+// everything a string.
+type jsonAnythingString string
+
+func (j *jsonAnythingString) UnmarshalJSON(data []byte) error {
+	var v interface{}
+	if err := json.Unmarshal(data, &v); err != nil {
+		return err
+	}
+	*j = jsonAnythingString(fmt.Sprintf("%v", v))
+
+	return nil
+}
+
+func (j *jsonAnythingString) ToStringPtr() *string {
+	if j != nil {
+		s := string(*j)
+		return &s
+	}
+	return nil
 }
