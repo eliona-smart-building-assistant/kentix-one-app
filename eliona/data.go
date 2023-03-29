@@ -136,16 +136,16 @@ func UpsertMultiSensorData(config apiserver.Configuration, measurements kentix.M
 }
 
 type measurementsPayload struct {
-	Temperature string `json:"temperature"`
-	Humidity    string `json:"humidity"`
-	DewPoint    string `json:"dew_point"`
-	AirQuality  string `json:"air_quality"`
-	CO2         string `json:"co2"`
-	CO          string `json:"co"`
-	Heat        string `json:"heat"`
-	Motion      string `json:"motion"`
-	Vibration   string `json:"vibration"`
-	PeopleCount string `json:"people_count"`
+	Temperature *string `json:"temperature"`
+	Humidity    *string `json:"humidity"`
+	DewPoint    *string `json:"dew_point"`
+	AirQuality  *string `json:"air_quality"`
+	CO2         *string `json:"co2"`
+	CO          *string `json:"co"`
+	Heat        *string `json:"heat"`
+	Motion      *string `json:"motion"`
+	Vibration   *string `json:"vibration"`
+	PeopleCount *string `json:"people_count"`
 }
 
 func upsertMultiSensorData(sensor apiserver.Device, projectId string, measurements kentix.Measurements) error {
@@ -155,16 +155,16 @@ func upsertMultiSensorData(sensor apiserver.Device, projectId string, measuremen
 		api.SUBTYPE_INPUT,
 		*sensor.AssetID,
 		measurementsPayload{
-			Temperature: measurements.Temperature.Value,
-			Humidity:    measurements.Humidity.Value,
-			DewPoint:    measurements.Dewpoint.Value,
-			AirQuality:  measurements.AirQuality.Value,
-			CO2:         measurements.CO2.Value,
-			CO:          measurements.CO.Value,
-			Heat:        measurements.Heat.Value,
-			Motion:      measurements.Motion.Value,
-			Vibration:   measurements.Vibration.Value,
-			PeopleCount: measurements.PeopleCount.Value,
+			Temperature: measurements.Temperature.Value.ToStringPtr(),
+			Humidity:    measurements.Humidity.Value.ToStringPtr(),
+			DewPoint:    measurements.Dewpoint.Value.ToStringPtr(),
+			AirQuality:  measurements.AirQuality.Value.ToStringPtr(),
+			CO2:         measurements.CO2.Value.ToStringPtr(),
+			CO:          measurements.CO.Value.ToStringPtr(),
+			Heat:        measurements.Heat.Value.ToStringPtr(),
+			Motion:      measurements.Motion.Value.ToStringPtr(),
+			Vibration:   measurements.Vibration.Value.ToStringPtr(),
+			PeopleCount: measurements.PeopleCount.Value.ToStringPtr(),
 		},
 	)
 }
