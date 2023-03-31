@@ -81,8 +81,8 @@ func GetDevices(conf apiserver.Configuration) ([]DeviceInfo, error) {
 	if err != nil {
 		return nil, fmt.Errorf("reading response from %s: %v", url, err)
 	}
-	for _, d := range systemValuesResponse.Devices {
-		d.AssetType, err = inferAssetType(d.Type)
+	for i, d := range systemValuesResponse.Devices {
+		systemValuesResponse.Devices[i].AssetType, err = inferAssetType(d.Type)
 		if err != nil {
 			return nil, fmt.Errorf("inferring asset type for %s: %v", d.IPAddress, err)
 		}
@@ -140,6 +140,7 @@ func fetchDoorlocks(url string, conf apiserver.Configuration) ([]DoorLock, error
 		return nil, fmt.Errorf("reading response from %s: %v", url, err)
 	}
 	doorlocks := accessPointResponse.Data
+
 	if accessPointResponse.Links.Next != "" {
 		dl, err := fetchDoorlocks(accessPointResponse.Links.Next, conf)
 		if err != nil {
