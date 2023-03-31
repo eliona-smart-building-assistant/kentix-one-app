@@ -1,0 +1,26 @@
+{
+	"name": "KentixONE doorlock",
+	"custom": false,
+	"translation": {
+		"de": "Türschloss",
+		"en": "Doorlock",
+		"fr": "Serrure de porte",
+		"it": "Serratura della porta"
+	},
+	"icon": "widgetMeetingRoom",
+	"withAlarm": false,
+	"withTimespan": true,
+	"elements": [
+		{
+			"id": 44,
+			"category": "input",
+			"sequence": 1,
+			"config": {
+				"description": "Unlock the door",
+				"resetTime": "10",
+				"text": "Unlock the door",
+				"type": "pushbutton"
+			}
+		}
+	]
+}
