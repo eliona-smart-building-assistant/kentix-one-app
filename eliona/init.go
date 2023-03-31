@@ -19,6 +19,7 @@ import (
 	"fmt"
 
 	"github.com/eliona-smart-building-assistant/go-eliona/asset"
+	"github.com/eliona-smart-building-assistant/go-eliona/dashboard"
 	"github.com/eliona-smart-building-assistant/go-utils/db"
 )
 
@@ -35,6 +36,10 @@ func InitEliona(connection db.Connection) error {
 	}
 	if err := asset.InitAssetTypeFile("eliona/asset-type-multi-sensor.json")(connection); err != nil {
 		return fmt.Errorf("init multi sensor asset type: %v", err)
+	}
+
+	if err := dashboard.InitWidgetTypeFile("eliona/widget-type-doorlock.json")(connection); err != nil {
+		return fmt.Errorf("init doorlock widget type: %v", err)
 	}
 	return nil
 }
