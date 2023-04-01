@@ -31,7 +31,7 @@ import (
 func CreateAssetsIfNecessary(config apiserver.Configuration, device kentix.DeviceInfo) error {
 	for _, projectId := range conf.ProjIds(config) {
 		if err := createDeviceAssetIfNecessary(config, projectId, device); err != nil {
-			return fmt.Errorf("creating assets for device %s: %v", device.UUID, err)
+			return fmt.Errorf("creating assets for device %v: %v", device, err)
 		}
 	}
 	return nil
@@ -50,14 +50,11 @@ func createDeviceAssetIfNecessary(config apiserver.Configuration, projectId stri
 	return createAssetIfNecessary(assetData)
 }
 
-func CreateDoorlockAssetsIfNecessary(config apiserver.Configuration, doorlock kentix.DoorLock, parentDeviceUUID string) error {
+func CreateDoorlockAssetsIfNecessary(config apiserver.Configuration, doorlock kentix.DoorLock) error {
 	for _, projectId := range conf.ProjIds(config) {
-		parentAssetID, err := conf.GetAssetId(context.Background(), config, projectId, parentDeviceUUID)
-		if err != nil {
-			return fmt.Errorf("getting parent asset ID: %v", err)
-		}
-		if err := createDoorlockAssetIfNecessary(config, projectId, parentAssetID, doorlock); err != nil {
-			return fmt.Errorf("creating assets for device %s: %v", doorlock.Name, err)
+		// TODO: Add parent asset ID?
+		if err := createDoorlockAssetIfNecessary(config, projectId, nil, doorlock); err != nil {
+			return fmt.Errorf("creating assets for doorlock %s: %v", doorlock.Name, err)
 		}
 	}
 	return nil
