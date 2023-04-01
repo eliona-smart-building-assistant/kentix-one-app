@@ -91,7 +91,6 @@ func collectDataForConfig(config apiserver.Configuration) {
 		log.Error("kentix", "getting devices info: %v", err)
 		return
 	}
-
 	for _, device := range devices {
 		if err := eliona.CreateAssetsIfNecessary(config, device); err != nil {
 			log.Error("eliona", "creating assets: %v", err)
@@ -108,6 +107,23 @@ func collectDataForConfig(config apiserver.Configuration) {
 				log.Error("eliona", "upserting MultiSensor data: %v", err)
 				return
 			}
+		}
+	}
+
+	doorlocks, err := kentix.GetDoorlocks(config)
+	if err != nil {
+		log.Error("kentix", "getting doorlocks info: %v", err)
+		return
+	}
+	for _, doorlock := range doorlocks {
+		if err := eliona.CreateDoorlockAssetsIfNecessary(config, doorlock); err != nil {
+			log.Error("eliona", "creating assets: %v", err)
+			return
+		}
+
+		if err := eliona.UpsertDoorlockData(config, doorlock); err != nil {
+			log.Error("eliona", "inserting doorlock data: %v", err)
+			return
 		}
 	}
 }

@@ -81,13 +81,19 @@ func GetDevices(conf apiserver.Configuration) ([]DeviceInfo, error) {
 	if err != nil {
 		return nil, fmt.Errorf("reading response from %s: %v", url, err)
 	}
-	for i, d := range systemValuesResponse.Devices {
-		systemValuesResponse.Devices[i].AssetType, err = inferAssetType(d.Type)
+	var devices []DeviceInfo
+	for _, d := range systemValuesResponse.Devices {
+		d.AssetType, err = inferAssetType(d.Type)
 		if err != nil {
 			return nil, fmt.Errorf("inferring asset type for %s: %v", d.IPAddress, err)
 		}
+		if d.AssetType == DoorlockAssetType {
+			// Doorlocks are added differently
+			continue
+		}
+		devices = append(devices, d)
 	}
-	return systemValuesResponse.Devices, nil
+	return devices, nil
 }
 
 func inferAssetType(typ int) (string, error) {
