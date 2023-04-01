@@ -47,7 +47,8 @@ func createDeviceAssetIfNecessary(config apiserver.Configuration, projectId stri
 		name:          fmt.Sprintf("%s (%s)", device.Name, device.IPAddress),
 		description:   fmt.Sprintf("%s (%s)", device.Name, device.UUID),
 	}
-	return createAssetIfNecessary(assetData)
+	_, _, err := createAssetIfNecessary(assetData)
+	return err
 }
 
 func CreateDoorlockAssetsIfNecessary(config apiserver.Configuration, doorlock kentix.DoorLock) error {
@@ -70,7 +71,24 @@ func createDoorlockAssetIfNecessary(config apiserver.Configuration, projectId st
 		name:          fmt.Sprintf("%s", doorlock.Name),
 		description:   fmt.Sprintf("%s (%v)", doorlock.Name, doorlock.ID),
 	}
-	return createAssetIfNecessary(assetData)
+	created, assetID, err := createAssetIfNecessary(assetData)
+	if err != nil {
+		return fmt.Errorf("creating doorlock asset: %v", err)
+	}
+	if !created {
+		return nil
+	}
+
+	if err := upsertData(
+		api.SUBTYPE_OUTPUT,
+		assetID,
+		doorlockOutputDataPayload{
+			Open: false,
+		},
+	); err != nil {
+		return fmt.Errorf("upserting sample output data: %v", err)
+	}
+	return nil
 }
 
 type assetData struct {
@@ -83,17 +101,17 @@ type assetData struct {
 	description   string
 }
 
-func createAssetIfNecessary(d assetData) error {
+func createAssetIfNecessary(d assetData) (created bool, assetID int32, err error) {
 	// Get known asset id from configuration
-	assetID, err := conf.GetAssetId(context.Background(), d.config, d.projectId, d.identifier)
+	currentAssetID, err := conf.GetAssetId(context.Background(), d.config, d.projectId, d.identifier)
 	if err != nil {
-		return fmt.Errorf("finding asset ID: %v", err)
+		return false, 0, fmt.Errorf("finding asset ID: %v", err)
 	}
-	if assetID != nil {
-		return nil
+	if currentAssetID != nil {
+		return false, *currentAssetID, nil
 	}
 
-	newId, err := asset.UpsertAsset(api.Asset{
+	newID, err := asset.UpsertAsset(api.Asset{
 		ProjectId:               d.projectId,
 		GlobalAssetIdentifier:   d.identifier,
 		Name:                    *api.NewNullableString(common.Ptr(d.name)),
@@ -102,18 +120,18 @@ func createAssetIfNecessary(d assetData) error {
 		ParentFunctionalAssetId: *api.NewNullableInt32(d.parentAssetId),
 	})
 	if err != nil {
-		return fmt.Errorf("upserting asset into Eliona: %v", err)
+		return false, 0, fmt.Errorf("upserting asset into Eliona: %v", err)
 	}
-	if newId == nil {
-		return fmt.Errorf("cannot create asset %s", d.name)
+	if newID == nil {
+		return false, 0, fmt.Errorf("cannot create asset %s", d.name)
 	}
 
 	// Remember the asset id for further usage
-	if err := conf.InsertDevice(context.Background(), d.config, d.projectId, d.identifier, *newId); err != nil {
-		return fmt.Errorf("inserting asset to config db: %v", err)
+	if err := conf.InsertDevice(context.Background(), d.config, d.projectId, d.identifier, *newID); err != nil {
+		return false, 0, fmt.Errorf("inserting asset to config db: %v", err)
 	}
 
 	log.Debug("eliona", "Created new asset for project %s and device %s.", d.projectId, d.identifier)
 
-	return nil
+	return true, *newID, nil
 }

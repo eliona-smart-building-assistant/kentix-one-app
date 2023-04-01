@@ -87,6 +87,10 @@ type doorlockInputDataPayload struct {
 	Battery int `json:"battery"`
 }
 
+type doorlockOutputDataPayload struct {
+	Open bool `json:"open"`
+}
+
 func upsertDoorlockData(config apiserver.Configuration, projectId string, doorlock kentix.DoorLock) error {
 	log.Debug("Eliona", "upserting data for doorlock: config %d and doorlock '%s'", config.Id, doorlock.ID)
 	assetId, err := conf.GetAssetId(context.Background(), config, projectId, fmt.Sprint(doorlock.ID))

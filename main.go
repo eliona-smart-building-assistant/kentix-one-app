@@ -53,6 +53,7 @@ func main() {
 
 	common.WaitForWithOs(
 		common.Loop(collectData, time.Second),
+		listenForOutputChanges,
 		listenApiRequests,
 	)
 
