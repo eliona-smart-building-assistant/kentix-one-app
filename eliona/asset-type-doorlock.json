@@ -40,6 +40,17 @@
 				"en": "Battery"
 			},
 			"type": "battery-voltage"
+		},
+
+		{
+			"enable": true,
+			"name": "open",
+			"subtype": "output",
+			"translation": {
+				"de": "Öffnen",
+				"en": "Open"
+			},
+			"type": "inputs-and-switches"
 		}
 	],
 	"custom": true,
