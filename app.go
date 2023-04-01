@@ -128,6 +128,17 @@ func collectDataForConfig(config apiserver.Configuration) {
 	}
 }
 
+func listenForOutputChanges() {
+	outputs, err := eliona.ListenForOutputChanges()
+	if err != nil {
+		log.Error("eliona", "listening for output changes: %v", err)
+		return
+	}
+	for output := range outputs {
+		log.Info("test", "%v", output)
+	}
+}
+
 // listenApiRequests starts an API server and listen for API requests
 // The API endpoints are defined in the openapi.yaml file
 func listenApiRequests() {
