@@ -21,6 +21,7 @@ import (
 	"fmt"
 	"kentix-one/apiserver"
 	"kentix-one/appdb"
+	"strconv"
 
 	"github.com/eliona-smart-building-assistant/go-utils/common"
 	"github.com/volatiletech/null/v8"
@@ -144,6 +145,20 @@ func GetConfigDevices(ctx context.Context, config apiserver.Configuration) ([]ap
 		apiDevices = append(apiDevices, s)
 	}
 	return apiDevices, nil
+}
+
+func GetDeviceId(ctx context.Context, assetID int32) (int, error) {
+	dbDevice, err := appdb.Devices(
+		appdb.DeviceWhere.AssetID.EQ(null.Int32From(assetID)),
+	).OneG(ctx)
+	if err != nil {
+		return 0, err
+	}
+	id, err := strconv.Atoi(dbDevice.SerialNumber)
+	if err != nil {
+		return 0, fmt.Errorf("parsing id %s: %v", dbDevice.SerialNumber, err)
+	}
+	return id, nil
 }
 
 func GetAssetId(ctx context.Context, config apiserver.Configuration, projId string, deviceId string) (*int32, error) {
