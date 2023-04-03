@@ -183,3 +183,18 @@ func (j *jsonAnythingString) ToStringPtr() *string {
 	}
 	return nil
 }
+
+func OpenDoorlock(id int, conf apiserver.Configuration) error {
+	url, err := url.JoinPath(conf.Address, "api/doorlocks", fmt.Sprint(id), "open")
+	if err != nil {
+		return fmt.Errorf("appending endpoint to URL: %v", err)
+	}
+	r, err := http.NewPutRequestWithApiKey(url, nil, "Authorization", "Bearer "+conf.ApiKey)
+	if err != nil {
+		return fmt.Errorf("creating request to %s: %v", url, err)
+	}
+	if _, err := http.Read[any](r, time.Duration(*conf.RequestTimeout)*time.Second, false); err != nil {
+		return fmt.Errorf("reading response from %s: %v", url, err)
+	}
+	return nil
+}
