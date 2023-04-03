@@ -36,7 +36,7 @@ func collectData() {
 		return
 	}
 	if len(configs) == 0 {
-		log.Error("conf", "No configs in DB")
+		log.Info("conf", "No configs in DB")
 		return
 	}
 
@@ -135,7 +135,48 @@ func listenForOutputChanges() {
 		return
 	}
 	for output := range outputs {
-		log.Info("test", "%v", output)
+		open, ok := output.Data["open"]
+		if !ok {
+			log.Error("eliona", "no 'open' attribute in data")
+			return
+		}
+		switch open {
+		case false:
+			return
+		case true:
+			openDoorlock(output.AssetId)
+		default:
+			log.Error("eliona", "invalid value '%s' in 'open' attribute", open)
+			return
+		}
+	}
+}
+
+func openDoorlock(assetID int32) {
+	configs, err := conf.GetConfigs(context.Background())
+	if err != nil {
+		log.Fatal("conf", "Couldn't read configs from DB: %v", err)
+		return
+	}
+	if len(configs) == 0 {
+		log.Info("conf", "No configs in DB")
+		return
+	}
+	for _, config := range configs {
+		doorlockID, err := conf.GetDeviceId(context.Background(), assetID)
+		if err != nil {
+			log.Error("conf", "getting device ID from asset (%v) id: %v", assetID, err)
+			return
+		}
+		if err := kentix.OpenDoorlock(doorlockID, config); err != nil {
+			log.Error("kentix", "opening doorlock %v: %v", doorlockID, err)
+			return
+		}
+
+		if err := eliona.ResetDoorlockState(assetID); err != nil {
+			log.Error("eliona", "resetting doorlock state: %v", err)
+			return
+		}
 	}
 }
 
