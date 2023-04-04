@@ -88,7 +88,7 @@ type doorlockInputDataPayload struct {
 }
 
 type doorlockOutputDataPayload struct {
-	Open bool `json:"open"`
+	Open int `json:"open"`
 }
 
 func upsertDoorlockData(config apiserver.Configuration, projectId string, doorlock kentix.DoorLock) error {

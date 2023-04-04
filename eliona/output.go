@@ -25,7 +25,7 @@ func ResetDoorlockState(assetId int32) error {
 		api.SUBTYPE_OUTPUT,
 		assetId,
 		doorlockOutputDataPayload{
-			Open: false,
+			Open: 0,
 		},
 	); err != nil {
 		return fmt.Errorf("resetting doorlock output data: %v", err)
