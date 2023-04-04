@@ -141,12 +141,12 @@ func listenForOutputChanges() {
 			return
 		}
 		switch open {
-		case false:
+		case 0:
 			return
-		case true:
+		case 1:
 			openDoorlock(output.AssetId)
 		default:
-			log.Error("eliona", "invalid value '%s' in 'open' attribute", open)
+			log.Error("eliona", "invalid value '%v' in 'open' attribute", open)
 			return
 		}
 	}
