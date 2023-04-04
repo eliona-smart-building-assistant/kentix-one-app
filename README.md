@@ -1,7 +1,7 @@
-# Eliona app to access Kentix One devices
-This [Eliona app for Kentix One](https://github.com/eliona-smart-building-assistant/kentix-one-app) connects the [Kentix One devices](https://kentix.com/en/kentixone/) to an [Eliona](https://www.eliona.io/) enviroment.
+# Eliona app to access KentixONE devices
+This [Eliona app for KentixONE](https://github.com/eliona-smart-building-assistant/kentix-one-app) connects the [KentixONE devices](https://kentix.com/en/kentixone/) to an [Eliona](https://www.eliona.io/) enviroment.
 
-This app collects data from Kentix One devices such as AccessManager, AlarmManager and MultiSensor and passes their data to Eliona. Each device corresponds to an asset in an Eliona project.
+This app collects data from KentixONE devices such as AccessManager, AlarmManager and MultiSensor and passes their data to Eliona. Each device corresponds to an asset in an Eliona project.
 
 ## Configuration
 
@@ -9,7 +9,7 @@ The app needs environment variables and database tables for configuration. To ed
 
 ### Kentix devices setup ###
 
-The Kentix One devices should be interconnected. One device (i.e. AlarmManager) should be in "Manager" mode and other devices should be in "Satellite" mode and connected to the Manager (which is done in the Kentix device UI configuration).
+The KentixONE devices should be interconnected. One device (i.e. AlarmManager) should be in "Manager" mode and other devices should be in "Satellite" mode and connected to the Manager (which is done in the Kentix device UI configuration).
 
 The user then sets the address of the Manager as one Configuration, and the Manager's Satellites are then discovered automatically by the app.
 
@@ -25,7 +25,7 @@ The registration could be done using the reset script.
 
 ### Environment variables ###
 
-- `APPNAME`: must be set to `kentix_one`. Some resources use this name to identify the app inside an Eliona environment.
+- `APPNAME`: must be set to `kentixone`. Some resources use this name to identify the app inside an Eliona environment.
 
 - `CONNECTION_STRING`: configures the [Eliona database](https://github.com/eliona-smart-building-assistant/go-utils/tree/main/db). (e.g. `postgres://user:pass@localhost:5432/iot`)
 
@@ -41,9 +41,9 @@ The registration could be done using the reset script.
 
 The app requires configuration data that remains in the database. To do this, the app creates its own database schema `kentix_one` during initialization. To modify and handle the configuration data the app provides an API access. Have a look at the [API specification](https://eliona-smart-building-assistant.github.io/open-api-docs/?https://raw.githubusercontent.com/eliona-smart-building-assistant/kentix-one-app/develop/openapi.yaml) how the configuration tables should be used.
 
-- `kentix_one.configuration`: Configurations for individual Kentix One devices. Editable by API.
+- `kentixone.configuration`: Configurations for individual KentixONE devices. Editable by API.
 
-- `kentix_one.device`: Specific devices, one for each project and configuration. One device corresponds to one asset in Eliona.
+- `kentixone.device`: Specific devices, one for each project and configuration. One device corresponds to one asset in Eliona.
 
 There is 1:N relationship between configuration and device (i.e. one Configuration could be in multiple projects and each would have it's own device).
 
@@ -52,9 +52,9 @@ There is 1:N relationship between configuration and device (i.e. one Configurati
 
 ## References
 
-### Kentix One App API ###
+### KentixONE App API ###
 
-The Kentix One app provides its own API to access configuration data and other functions. The full description of the API is defined in the `openapi.yaml` OpenAPI definition file.
+The KentixONE app provides its own API to access configuration data and other functions. The full description of the API is defined in the `openapi.yaml` OpenAPI definition file.
 
 - [API Reference](https://eliona-smart-building-assistant.github.io/open-api-docs/?https://raw.githubusercontent.com/eliona-smart-building-assistant/kentix-one-app/develop/openapi.yaml) shows details of the API
 
@@ -65,10 +65,10 @@ The Kentix One app provides its own API to access configuration data and other f
 
 This app creates Eliona asset types and attribute sets during initialization.
 
-The data is written for each Kentix One device, structured into different subtypes of Elinoa assets. The following subtypes are defined:
+The data is written for each KentixONE device, structured into different subtypes of Elinoa assets. The following subtypes are defined:
 
-- `Input`: Current values reported by Kentix One sensors (i.e. MultiSensor readings).
-- `Info`: Static data which specifies a Kentix One device like address and firmware info.
+- `Input`: Current values reported by KentixONE sensors (i.e. MultiSensor readings).
+- `Info`: Static data which specifies a KentixONE device like address and firmware info.
 
 ### Continuous asset creation
 
@@ -94,10 +94,10 @@ For the database access [SQLBoiler](https://github.com/volatiletech/sqlboiler) i
 ./generate-db.sh # Linux
 ```
 
-### Mock Kentix One devices ###
+### Mock KentixONE devices ###
 `kentix-one-mock` folder contains mock endpoints implementation:
 - `access-manager`: `localhost:3031`
 - `alarm-manager`: `localhost:3032`
 - `multi-sensor`: `localhost:3033`
 
-The [Kentix API documentation](https://kentix.com/transfer/smartapi/alarmmanager) roughly corresponds to the device APIs, but there are subtle differences (like having different data type for doorlock battery level). Kentix promised to document the Kentix One API in 2023.
+The [Kentix API documentation](https://kentix.com/transfer/smartapi/alarmmanager) roughly corresponds to the device APIs, but there are subtle differences (like having different data type for doorlock battery level). Kentix promised to document the KentixONE API in 2023.
