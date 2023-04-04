@@ -72,7 +72,7 @@ The data is written for each Kentix One device, structured into different subtyp
 
 ### Continuous asset creation
 
-todo
+Assets for all devices connected to the configured "Manager" device are created automatically when the configuration is added.
 
 ## Tools
 
