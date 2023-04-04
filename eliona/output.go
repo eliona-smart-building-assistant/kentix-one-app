@@ -19,16 +19,3 @@ func ListenForOutputChanges() (chan api.Data, error) {
 	go http.ListenWebSocket(conn, outputs)
 	return outputs, nil
 }
-
-func ResetDoorlockState(assetId int32) error {
-	if err := upsertData(
-		api.SUBTYPE_OUTPUT,
-		assetId,
-		doorlockOutputDataPayload{
-			Open: 0,
-		},
-	); err != nil {
-		return fmt.Errorf("resetting doorlock output data: %v", err)
-	}
-	return nil
-}

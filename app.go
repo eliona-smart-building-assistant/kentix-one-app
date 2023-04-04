@@ -172,11 +172,6 @@ func openDoorlock(assetID int32) {
 			log.Error("kentix", "opening doorlock %v: %v", doorlockID, err)
 			return
 		}
-
-		if err := eliona.ResetDoorlockState(assetID); err != nil {
-			log.Error("eliona", "resetting doorlock state: %v", err)
-			return
-		}
 	}
 }
 
