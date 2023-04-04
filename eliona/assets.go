@@ -83,7 +83,7 @@ func createDoorlockAssetIfNecessary(config apiserver.Configuration, projectId st
 		api.SUBTYPE_OUTPUT,
 		assetID,
 		doorlockOutputDataPayload{
-			Open: false,
+			Open: 0,
 		},
 	); err != nil {
 		return fmt.Errorf("upserting sample output data: %v", err)
