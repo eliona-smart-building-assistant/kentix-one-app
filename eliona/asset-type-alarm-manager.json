@@ -43,7 +43,7 @@
 	],
 	"custom": true,
 	"icon": "light",
-	"name": "kentix_one_alarm_manager",
+	"name": "kentixone_alarm_manager",
 	"translation": {
 		"de": "KentixONE AlarmManager",
 		"en": "KentixONE AlarmManager"
