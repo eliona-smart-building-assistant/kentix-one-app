@@ -55,7 +55,7 @@
 	],
 	"custom": true,
 	"icon": "closable",
-	"name": "kentix_one_doorlock",
+	"name": "kentixone_doorlock",
 	"translation": {
 		"de": "KentixONE Türschloss",
 		"en": "KentixONE Doorlock"

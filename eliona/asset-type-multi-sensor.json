@@ -50,7 +50,6 @@
 			},
 			"type": "device-status"
 		},
-
 		{
 			"enable": true,
 			"name": "temperature",
@@ -159,7 +158,7 @@
 	],
 	"custom": true,
 	"icon": "environment",
-	"name": "kentix_one_multi_sensor",
+	"name": "kentixone_multi_sensor",
 	"translation": {
 		"de": "KentixONE MultiSensor",
 		"en": "KentixONE MultiSensor"

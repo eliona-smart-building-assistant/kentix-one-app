@@ -31,7 +31,7 @@ import (
 func CreateAssetsIfNecessary(config apiserver.Configuration, device kentix.DeviceInfo) error {
 	for _, projectId := range conf.ProjIds(config) {
 		if err := createDeviceAssetIfNecessary(config, projectId, device); err != nil {
-			return fmt.Errorf("creating assets for device %v: %v", device, err)
+			return fmt.Errorf("creating assets for device %v: %v", device.UUID, err)
 		}
 	}
 	return nil
@@ -111,16 +111,17 @@ func createAssetIfNecessary(d assetData) (created bool, assetID int32, err error
 		return false, *currentAssetID, nil
 	}
 
-	newID, err := asset.UpsertAsset(api.Asset{
+	a := api.Asset{
 		ProjectId:               d.projectId,
 		GlobalAssetIdentifier:   d.identifier,
 		Name:                    *api.NewNullableString(common.Ptr(d.name)),
 		AssetType:               d.assetType,
 		Description:             *api.NewNullableString(common.Ptr(d.description)),
 		ParentFunctionalAssetId: *api.NewNullableInt32(d.parentAssetId),
-	})
+	}
+	newID, err := asset.UpsertAsset(a)
 	if err != nil {
-		return false, 0, fmt.Errorf("upserting asset into Eliona: %v", err)
+		return false, 0, fmt.Errorf("upserting asset %+v into Eliona: %v", a, err)
 	}
 	if newID == nil {
 		return false, 0, fmt.Errorf("cannot create asset %s", d.name)
