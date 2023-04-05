@@ -17,10 +17,12 @@ package conf
 
 import (
 	"context"
+	"encoding/json"
 	"errors"
 	"fmt"
 	"kentix-one/apiserver"
 	"kentix-one/appdb"
+	"kentix-one/kentix"
 	"strconv"
 
 	"github.com/eliona-smart-building-assistant/go-utils/common"
@@ -32,12 +34,14 @@ var ErrBadRequest = errors.New("bad request")
 
 // InsertConfig inserts or updates
 func InsertConfig(ctx context.Context, config apiserver.Configuration) (apiserver.Configuration, error) {
-	dbConfig := dbConfigFromApiConfig(config)
-	err := dbConfig.InsertG(ctx, boil.Infer())
+	dbConfig, err := dbConfigFromApiConfig(config)
 	if err != nil {
-		return apiserver.Configuration{}, err
+		return apiserver.Configuration{}, fmt.Errorf("creating DB config from API config: %v", err)
 	}
-	return config, err
+	if err := dbConfig.InsertG(ctx, boil.Infer()); err != nil {
+		return apiserver.Configuration{}, fmt.Errorf("inserting DB config: %v", err)
+	}
+	return config, nil
 }
 
 func GetConfig(ctx context.Context, configID int64) (*apiserver.Configuration, error) {
@@ -50,7 +54,10 @@ func GetConfig(ctx context.Context, configID int64) (*apiserver.Configuration, e
 	if dbConfig == nil {
 		return nil, ErrBadRequest
 	}
-	apiConfig := apiConfigFromDbConfig(dbConfig)
+	apiConfig, err := apiConfigFromDbConfig(dbConfig)
+	if err != nil {
+		return nil, fmt.Errorf("creating API config from DB config: %v", err)
+	}
 	return &apiConfig, nil
 }
 
@@ -70,7 +77,7 @@ func DeleteConfig(ctx context.Context, configID int64) error {
 	return nil
 }
 
-func dbConfigFromApiConfig(apiConfig apiserver.Configuration) (dbConfig appdb.Configuration) {
+func dbConfigFromApiConfig(apiConfig apiserver.Configuration) (dbConfig appdb.Configuration, err error) {
 	dbConfig.ID = null.Int64FromPtr(apiConfig.Id).Int64
 	dbConfig.Address = null.StringFrom(apiConfig.Address)
 	dbConfig.APIKey = null.StringFrom(apiConfig.ApiKey)
@@ -79,23 +86,35 @@ func dbConfigFromApiConfig(apiConfig apiserver.Configuration) (dbConfig appdb.Co
 	if apiConfig.RequestTimeout != nil {
 		dbConfig.RequestTimeout = *apiConfig.RequestTimeout
 	}
+	af, err := json.Marshal(apiConfig.AssetFilter)
+	if err != nil {
+		return appdb.Configuration{}, fmt.Errorf("marshalling assetFilter: %v", err)
+	}
+	dbConfig.AssetFilter = null.JSONFrom(af)
 	dbConfig.Active = null.BoolFromPtr(apiConfig.Active)
 	if apiConfig.ProjectIDs != nil {
 		dbConfig.ProjectIds = *apiConfig.ProjectIDs
 	}
-	return dbConfig
+	return dbConfig, nil
 }
 
-func apiConfigFromDbConfig(dbConfig *appdb.Configuration) (apiConfig apiserver.Configuration) {
+func apiConfigFromDbConfig(dbConfig *appdb.Configuration) (apiConfig apiserver.Configuration, err error) {
 	apiConfig.Id = &dbConfig.ID
 	apiConfig.Address = dbConfig.Address.String
 	apiConfig.ApiKey = dbConfig.APIKey.String
 	apiConfig.Enable = dbConfig.Enable.Ptr()
 	apiConfig.RefreshInterval = dbConfig.RefreshInterval
 	apiConfig.RequestTimeout = &dbConfig.RequestTimeout
+	if dbConfig.AssetFilter.Valid {
+		var af [][]apiserver.FilterRule
+		if err := json.Unmarshal(dbConfig.AssetFilter.JSON, &af); err != nil {
+			return apiserver.Configuration{}, fmt.Errorf("unmarshalling assetFilter: %v", err)
+		}
+		apiConfig.AssetFilter = af
+	}
 	apiConfig.Active = dbConfig.Active.Ptr()
 	apiConfig.ProjectIDs = common.Ptr[[]string](dbConfig.ProjectIds)
-	return apiConfig
+	return apiConfig, nil
 }
 
 func apiDeviceFromDbDevice(ctx context.Context, dbDevice *appdb.Device) (apiDevice apiserver.Device, err error) {
@@ -104,7 +123,10 @@ func apiDeviceFromDbDevice(ctx context.Context, dbDevice *appdb.Device) (apiDevi
 	if err != nil {
 		return apiDevice, fmt.Errorf("fetching configuration for sensor: %v", err)
 	}
-	apiDevice.Configuration = apiConfigFromDbConfig(dbConfiguration)
+	apiDevice.Configuration, err = apiConfigFromDbConfig(dbConfiguration)
+	if err != nil {
+		return apiDevice, fmt.Errorf("creating API config from DB config: %v", err)
+	}
 	apiDevice.ProjectID = dbDevice.ProjectID
 	apiDevice.SerialNumber = dbDevice.SerialNumber
 	return apiDevice, nil
@@ -118,7 +140,11 @@ func GetConfigs(ctx context.Context) ([]apiserver.Configuration, error) {
 	var apiConfigs []apiserver.Configuration
 	for _, dbConfig := range dbConfigs {
 		dbConfig.R.GetDevices()
-		apiConfigs = append(apiConfigs, apiConfigFromDbConfig(dbConfig))
+		ac, err := apiConfigFromDbConfig(dbConfig)
+		if err != nil {
+			return nil, fmt.Errorf("creating API config from DB config: %v", err)
+		}
+		apiConfigs = append(apiConfigs, ac)
 	}
 	return apiConfigs, nil
 }
@@ -209,4 +235,46 @@ func SetAllConfigsInactive(ctx context.Context) (int64, error) {
 	return appdb.Configurations().UpdateAllG(ctx, appdb.M{
 		appdb.ConfigurationColumns.Active: false,
 	})
+}
+
+func DoesDeviceAdhereToFilter(ctx context.Context, config apiserver.Configuration, device kentix.DeviceInfo) (bool, error) {
+	fp := map[string]string{
+		"deviceName":    device.Name,
+		"ipAddress":     device.IPAddress,
+		"macAddress":    device.MacAddress,
+		"deviceSerial":  device.UUID,
+		"deviceType":    fmt.Sprint(device.Type),
+		"deviceVersion": device.Version,
+	}
+	adheres, err := common.Filter(apiFilterToCommonFilter(config.AssetFilter), fp)
+	if err != nil {
+		return false, err
+	}
+	return adheres, nil
+}
+
+func DoesDoorlockAdhereToFilter(ctx context.Context, config apiserver.Configuration, doorlock kentix.DoorLock) (bool, error) {
+	fp := map[string]string{
+		"doorlockName":   doorlock.Name,
+		"doorlockSerial": fmt.Sprint(doorlock.ID),
+	}
+	adheres, err := common.Filter(apiFilterToCommonFilter(config.AssetFilter), fp)
+	if err != nil {
+		return false, err
+	}
+	return adheres, nil
+}
+
+func apiFilterToCommonFilter(input [][]apiserver.FilterRule) [][]common.FilterRule {
+	result := make([][]common.FilterRule, len(input))
+	for i := 0; i < len(input); i++ {
+		result[i] = make([]common.FilterRule, len(input[i]))
+		for j := 0; j < len(input[i]); j++ {
+			result[i][j] = common.FilterRule{
+				Parameter: input[i][j].Parameter,
+				Regex:     input[i][j].Regex,
+			}
+		}
+	}
+	return result
 }
