@@ -123,7 +123,8 @@
 				"de": "Hitze",
 				"en": "Heat"
 			},
-			"type": "temperature"
+			"type": "temperature",
+			"unit": "˚C"
 		},
 		{
 			"enable": true,
@@ -133,7 +134,8 @@
 				"de": "Bewegung",
 				"en": "Motion"
 			},
-			"type": "motion"
+			"type": "motion",
+			"unit": "%"
 		},
 		{
 			"enable": true,
