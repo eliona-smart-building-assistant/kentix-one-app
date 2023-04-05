@@ -92,6 +92,17 @@ func collectDataForConfig(config apiserver.Configuration) {
 		return
 	}
 	for _, device := range devices {
+		if config.AssetFilter != nil {
+			shouldCreate, err := conf.DoesDeviceAdhereToFilter(context.Background(), config, device)
+			if err != nil {
+				log.Error("config", "determining whether device adheres to filter: %v", err)
+				return
+			}
+			if !shouldCreate {
+				continue
+			}
+		}
+
 		if err := eliona.CreateAssetsIfNecessary(config, device); err != nil {
 			log.Error("eliona", "creating assets: %v", err)
 			return
@@ -116,6 +127,16 @@ func collectDataForConfig(config apiserver.Configuration) {
 		return
 	}
 	for _, doorlock := range doorlocks {
+		if config.AssetFilter != nil {
+			shouldCreate, err := conf.DoesDoorlockAdhereToFilter(context.Background(), config, doorlock)
+			if err != nil {
+				log.Error("config", "determining whether doorlock adheres to filter: %v", err)
+				return
+			}
+			if !shouldCreate {
+				continue
+			}
+		}
 		if err := eliona.CreateDoorlockAssetsIfNecessary(config, doorlock); err != nil {
 			log.Error("eliona", "creating assets: %v", err)
 			return

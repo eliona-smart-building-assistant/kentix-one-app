@@ -25,6 +25,7 @@ create table if not exists kentixone.configuration
 	enable           boolean default false,
 	refresh_interval integer not null default 60,
 	request_timeout  integer not null default 120,
+	asset_filter     json,
 	active           boolean default false,
 	project_ids      text[]
 );

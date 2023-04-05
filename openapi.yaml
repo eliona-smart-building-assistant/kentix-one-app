@@ -247,6 +247,34 @@ components:
           description: Timeout in seconds
           default: 120
           nullable: true
+        assetFilter:
+          $ref: '#/components/schemas/AssetFilter'
+          nullable: true
+          example: 
+            [
+              [
+                {
+                  "parameter": "deviceName",
+                  "regex": "Main.*"
+                },
+                {
+                  "parameter": "deviceType",
+                  "regex": "110"
+                }
+              ],
+              [
+                {
+                  "parameter": "macAddress",
+                  "regex": "(70:82:0e:12:28:cc|70:56:06:12:.*)"
+                }
+              ],
+              [
+                {
+                  "parameter": "deviceName",
+                  "regex": "Multi.*"
+                }
+              ]
+            ]
         active:
           type: boolean
           readOnly: true
@@ -278,3 +306,23 @@ components:
         serialNumber:
           type: string
           description: Serial number reported by the KentixONE device
+
+    AssetFilter:
+      type: array
+      description: Array of rules combined by logical OR
+      items:
+        type: array
+        description: Array of rules combined by logical AND
+        items:
+          $ref: '#/components/schemas/FilterRule'
+
+    FilterRule:
+      type: object
+      description: Asset selection rule. Possible parameters are defined in app's README file.
+      properties:
+        parameter:
+          type: string
+          example: "name"
+        regex:
+          type: string
+          example: "^KentixONE.*$"
