@@ -1,5 +1,5 @@
 # Eliona app to access KentixONE devices
-This [Eliona app for KentixONE](https://github.com/eliona-smart-building-assistant/kentix-one-app) connects the [KentixONE devices](https://kentix.com/en/kentixone/) to an [Eliona](https://www.eliona.io/) enviroment.
+This [Eliona app for KentixONE](https://github.com/eliona-smart-building-assistant/kentix-one-app) connects the [KentixONE devices](https://kentix.com/en/kentixone/) to an [Eliona](https://www.eliona.io/) environment.
 
 This app collects data from KentixONE devices such as AccessManager, AlarmManager and MultiSensor and passes their data to Eliona. Each device corresponds to an asset in an Eliona project.
 
@@ -73,6 +73,13 @@ The data is written for each KentixONE device, structured into different subtype
 ### Continuous asset creation
 
 Assets for all devices connected to the configured "Manager" device are created automatically when the configuration is added.
+
+To select which assets to create, a filter could be specified in config. The schema of the filter is defined in the `openapi.yaml` file.
+
+Possible filter parameters are defined in following places:
+
+- `conf.go:DoesDeviceAdhereToFilter` for devices
+- `conf.go:DoesDoorlockAdhereToFilter` for doorlocks
 
 ## Tools
 

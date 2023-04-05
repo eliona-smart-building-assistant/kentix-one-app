@@ -31,6 +31,7 @@ type Configuration struct {
 	Enable          null.Bool         `boil:"enable" json:"enable,omitempty" toml:"enable" yaml:"enable,omitempty"`
 	RefreshInterval int32             `boil:"refresh_interval" json:"refresh_interval" toml:"refresh_interval" yaml:"refresh_interval"`
 	RequestTimeout  int32             `boil:"request_timeout" json:"request_timeout" toml:"request_timeout" yaml:"request_timeout"`
+	AssetFilter     null.JSON         `boil:"asset_filter" json:"asset_filter,omitempty" toml:"asset_filter" yaml:"asset_filter,omitempty"`
 	Active          null.Bool         `boil:"active" json:"active,omitempty" toml:"active" yaml:"active,omitempty"`
 	ProjectIds      types.StringArray `boil:"project_ids" json:"project_ids,omitempty" toml:"project_ids" yaml:"project_ids,omitempty"`
 
@@ -45,6 +46,7 @@ var ConfigurationColumns = struct {
 	Enable          string
 	RefreshInterval string
 	RequestTimeout  string
+	AssetFilter     string
 	Active          string
 	ProjectIds      string
 }{
@@ -54,6 +56,7 @@ var ConfigurationColumns = struct {
 	Enable:          "enable",
 	RefreshInterval: "refresh_interval",
 	RequestTimeout:  "request_timeout",
+	AssetFilter:     "asset_filter",
 	Active:          "active",
 	ProjectIds:      "project_ids",
 }
@@ -65,6 +68,7 @@ var ConfigurationTableColumns = struct {
 	Enable          string
 	RefreshInterval string
 	RequestTimeout  string
+	AssetFilter     string
 	Active          string
 	ProjectIds      string
 }{
@@ -74,6 +78,7 @@ var ConfigurationTableColumns = struct {
 	Enable:          "configuration.enable",
 	RefreshInterval: "configuration.refresh_interval",
 	RequestTimeout:  "configuration.request_timeout",
+	AssetFilter:     "configuration.asset_filter",
 	Active:          "configuration.active",
 	ProjectIds:      "configuration.project_ids",
 }
@@ -188,6 +193,30 @@ func (w whereHelperint32) NIN(slice []int32) qm.QueryMod {
 	return qm.WhereNotIn(fmt.Sprintf("%s NOT IN ?", w.field), values...)
 }
 
+type whereHelpernull_JSON struct{ field string }
+
+func (w whereHelpernull_JSON) EQ(x null.JSON) qm.QueryMod {
+	return qmhelper.WhereNullEQ(w.field, false, x)
+}
+func (w whereHelpernull_JSON) NEQ(x null.JSON) qm.QueryMod {
+	return qmhelper.WhereNullEQ(w.field, true, x)
+}
+func (w whereHelpernull_JSON) LT(x null.JSON) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.LT, x)
+}
+func (w whereHelpernull_JSON) LTE(x null.JSON) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.LTE, x)
+}
+func (w whereHelpernull_JSON) GT(x null.JSON) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.GT, x)
+}
+func (w whereHelpernull_JSON) GTE(x null.JSON) qm.QueryMod {
+	return qmhelper.Where(w.field, qmhelper.GTE, x)
+}
+
+func (w whereHelpernull_JSON) IsNull() qm.QueryMod    { return qmhelper.WhereIsNull(w.field) }
+func (w whereHelpernull_JSON) IsNotNull() qm.QueryMod { return qmhelper.WhereIsNotNull(w.field) }
+
 type whereHelpertypes_StringArray struct{ field string }
 
 func (w whereHelpertypes_StringArray) EQ(x types.StringArray) qm.QueryMod {
@@ -221,6 +250,7 @@ var ConfigurationWhere = struct {
 	Enable          whereHelpernull_Bool
 	RefreshInterval whereHelperint32
 	RequestTimeout  whereHelperint32
+	AssetFilter     whereHelpernull_JSON
 	Active          whereHelpernull_Bool
 	ProjectIds      whereHelpertypes_StringArray
 }{
@@ -230,6 +260,7 @@ var ConfigurationWhere = struct {
 	Enable:          whereHelpernull_Bool{field: "\"kentixone\".\"configuration\".\"enable\""},
 	RefreshInterval: whereHelperint32{field: "\"kentixone\".\"configuration\".\"refresh_interval\""},
 	RequestTimeout:  whereHelperint32{field: "\"kentixone\".\"configuration\".\"request_timeout\""},
+	AssetFilter:     whereHelpernull_JSON{field: "\"kentixone\".\"configuration\".\"asset_filter\""},
 	Active:          whereHelpernull_Bool{field: "\"kentixone\".\"configuration\".\"active\""},
 	ProjectIds:      whereHelpertypes_StringArray{field: "\"kentixone\".\"configuration\".\"project_ids\""},
 }
@@ -262,9 +293,9 @@ func (r *configurationR) GetDevices() DeviceSlice {
 type configurationL struct{}
 
 var (
-	configurationAllColumns            = []string{"id", "address", "api_key", "enable", "refresh_interval", "request_timeout", "active", "project_ids"}
+	configurationAllColumns            = []string{"id", "address", "api_key", "enable", "refresh_interval", "request_timeout", "asset_filter", "active", "project_ids"}
 	configurationColumnsWithoutDefault = []string{}
-	configurationColumnsWithDefault    = []string{"id", "address", "api_key", "enable", "refresh_interval", "request_timeout", "active", "project_ids"}
+	configurationColumnsWithDefault    = []string{"id", "address", "api_key", "enable", "refresh_interval", "request_timeout", "asset_filter", "active", "project_ids"}
 	configurationPrimaryKeyColumns     = []string{"id"}
 	configurationGeneratedColumns      = []string{}
 )

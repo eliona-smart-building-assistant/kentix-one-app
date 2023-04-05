@@ -30,6 +30,9 @@ type Configuration struct {
 	// Timeout in seconds
 	RequestTimeout *int32 `json:"requestTimeout,omitempty"`
 
+	// Array of rules combined by logical OR
+	AssetFilter [][]FilterRule `json:"assetFilter,omitempty"`
+
 	// Set to `true` by the app when running and to `false` when app is stopped
 	Active *bool `json:"active,omitempty"`
 
@@ -39,6 +42,9 @@ type Configuration struct {
 
 // AssertConfigurationRequired checks if the required fields are not zero-ed
 func AssertConfigurationRequired(obj Configuration) error {
+	if err := AssertRecurseFilterRuleRequired(obj.AssetFilter); err != nil {
+		return err
+	}
 	return nil
 }
 
