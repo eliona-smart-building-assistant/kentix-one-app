@@ -17,17 +17,17 @@ openapi: 3.0.3
 
 info:
   version: 1.0.0
-  title: Kentix One app API
-  description: API to access and configure the Kentix One app
+  title: KentixONE app API
+  description: API to access and configure the KentixONE app
 externalDocs:
-  description: Find out more about the Kentix One app
+  description: Find out more about the KentixONE app
   url: https://github.com/eliona-smart-building-assistant/kentix-one-app
 servers:
   - url: http://kentix-one/v1
 
 tags:
   - name: Configuration
-    description: Configure access to Kentix One devices
+    description: Configure access to KentixONE devices
     externalDocs:
       url: https://github.com/eliona-smart-building-assistant/kentix-one-app
 
@@ -36,12 +36,12 @@ paths:
     get:
       tags:
         - Configuration
-      summary: Get all Kentix One configurations
-      description: Gets information about all Kentix One configurations
+      summary: Get all KentixONE configurations
+      description: Gets information about all KentixONE configurations
       operationId: getConfigurations
       responses:
         "200":
-          description: Successfully returned configured Kentix One configurations
+          description: Successfully returned configured KentixONE configurations
           content:
             application/json:
               schema:
@@ -51,8 +51,8 @@ paths:
     post:
       tags:
         - Configuration
-      summary: Creates a Kentix One configuration
-      description: Creates a Kentix One configuration.
+      summary: Creates a KentixONE configuration
+      description: Creates a KentixONE configuration.
       operationId: postConfiguration
       requestBody:
         content:
@@ -61,7 +61,7 @@ paths:
               $ref: '#/components/schemas/Configuration'
       responses:
         "201":
-          description: Successfully created a new Kentix One configuration
+          description: Successfully created a new KentixONE configuration
           content:
             application/json:
               schema:
@@ -70,14 +70,14 @@ paths:
     get:
       tags:
         - Configuration
-      summary: Get Kentix One configuration
-      description: Gets information about the Kentix One configuration with the given id
+      summary: Get KentixONE configuration
+      description: Gets information about the KentixONE configuration with the given id
       parameters:
         - $ref: '#/components/parameters/config-id'
       operationId: getConfigurationById
       responses:
         "200":
-          description: Successfully returned Kentix One configuration
+          description: Successfully returned KentixONE configuration
           content:
             application/json:
               schema:
@@ -87,8 +87,8 @@ paths:
     put:
       tags:
         - Configuration
-      summary: Updates a Kentix One configuration
-      description: Updates a Kentix One configuration
+      summary: Updates a KentixONE configuration
+      description: Updates a KentixONE configuration
       parameters:
         - $ref: '#/components/parameters/config-id'
       operationId: putConfigurationById
@@ -99,7 +99,7 @@ paths:
               $ref: '#/components/schemas/Configuration'
       responses:
         "200":
-          description: Successfully updated a Kentix One configuration
+          description: Successfully updated a KentixONE configuration
           content:
             application/json:
               schema:
@@ -107,14 +107,14 @@ paths:
     delete:
       tags:
         - Configuration
-      summary: Deletes a Kentix One configuration
-      description: Removes information about the Kentix One configuration with the given id
+      summary: Deletes a KentixONE configuration
+      description: Removes information about the KentixONE configuration with the given id
       parameters:
         - $ref: '#/components/parameters/config-id'
       operationId: deleteConfigurationById
       responses:
         "204":
-          description: Successfully deleted configured Kentix One configuration
+          description: Successfully deleted configured KentixONE configuration
         "400":
           description: Bad request
 
@@ -154,7 +154,7 @@ paths:
           required: true
           schema:
             type: string
-            example: Kentix One devices
+            example: KentixONE devices
         - name: projectId
           in: query
           description: Define the project the dashboard should be
@@ -206,7 +206,7 @@ components:
     config-id:
       name: config-id
       in: path
-      description: The ID of the Kentix One Config
+      description: The ID of the KentixONE Config
       example: 4711
       required: true
       schema:
@@ -217,7 +217,7 @@ components:
   schemas:
     Configuration:
       type: object
-      description: Each configuration defines access to one Kentix One device.
+      description: Each configuration defines access to one KentixONE device.
       properties:
         id:
           type: integer
@@ -228,11 +228,11 @@ components:
         address:
           type: string
           format: string
-          description: IP or hostname of the Kentix One device
+          description: IP or hostname of the KentixONE device
           example: 10.10.10.101
         apiKey:
           type: string
-          description: Kentix One API key
+          description: KentixONE API key
         enable:
           type: boolean
           description: Flag to enable or disable fetching from this device
@@ -254,7 +254,7 @@ components:
           nullable: true
         projectIDs:
           type: array
-          description: List of Eliona project ids for which this device should collect data. For each project id all smart devices are automatically created as an asset in Eliona. The mapping between Eliona is stored as an asset mapping in the Kentix One app.
+          description: List of Eliona project ids for which this device should collect data. For each project id all smart devices are automatically created as an asset in Eliona. The mapping between Eliona is stored as an asset mapping in the KentixONE app.
           nullable: true
           items:
             type: string
@@ -277,4 +277,4 @@ components:
           nullable: true
         serialNumber:
           type: string
-          description: Serial number reported by the Kentix One device
+          description: Serial number reported by the KentixONE device
