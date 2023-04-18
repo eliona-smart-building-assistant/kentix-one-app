@@ -17,9 +17,13 @@
 -- The only thing that remains after testing then are the incremented auto-increment values and app
 -- registration (which you can optionally remove as well by uncommenting the last command).
 
-INSERT INTO public.eliona_app (app_name, category, enable)
-VALUES ('kentixone', 'app', 't')
-ON CONFLICT (app_name) DO UPDATE SET initialized_at = null;
+INSERT INTO public.eliona_store (app_name, category, version)
+VALUES ('kentixone', 'app', '1.0.0')
+    ON CONFLICT (app_name) DO UPDATE SET version = '1.0.0';
+
+INSERT INTO public.eliona_app (app_name, enable)
+VALUES ('kentixone', 't')
+    ON CONFLICT (app_name) DO UPDATE SET initialized_at = null;
 
 DROP SCHEMA IF EXISTS kentixone CASCADE;
 
