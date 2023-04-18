@@ -7,5 +7,6 @@
     "en": "This template can be used to create an app stub for an Eliona environment.",
     "de": "Diese Vorlage kann verwendet werden um eine App für Eliona zu erstellen."
   },
+  "apiSpecificationPath": "/v1/version/openapi.json",
   "useEnvironment": [ "CONNECTION_STRING", "API_ENDPOINT", "API_TOKEN" ]
 }
