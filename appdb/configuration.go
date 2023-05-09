@@ -254,15 +254,15 @@ var ConfigurationWhere = struct {
 	Active          whereHelpernull_Bool
 	ProjectIds      whereHelpertypes_StringArray
 }{
-	ID:              whereHelperint64{field: "\"kentixone\".\"configuration\".\"id\""},
-	Address:         whereHelpernull_String{field: "\"kentixone\".\"configuration\".\"address\""},
-	APIKey:          whereHelpernull_String{field: "\"kentixone\".\"configuration\".\"api_key\""},
-	Enable:          whereHelpernull_Bool{field: "\"kentixone\".\"configuration\".\"enable\""},
-	RefreshInterval: whereHelperint32{field: "\"kentixone\".\"configuration\".\"refresh_interval\""},
-	RequestTimeout:  whereHelperint32{field: "\"kentixone\".\"configuration\".\"request_timeout\""},
-	AssetFilter:     whereHelpernull_JSON{field: "\"kentixone\".\"configuration\".\"asset_filter\""},
-	Active:          whereHelpernull_Bool{field: "\"kentixone\".\"configuration\".\"active\""},
-	ProjectIds:      whereHelpertypes_StringArray{field: "\"kentixone\".\"configuration\".\"project_ids\""},
+	ID:              whereHelperint64{field: "\"kentix_one\".\"configuration\".\"id\""},
+	Address:         whereHelpernull_String{field: "\"kentix_one\".\"configuration\".\"address\""},
+	APIKey:          whereHelpernull_String{field: "\"kentix_one\".\"configuration\".\"api_key\""},
+	Enable:          whereHelpernull_Bool{field: "\"kentix_one\".\"configuration\".\"enable\""},
+	RefreshInterval: whereHelperint32{field: "\"kentix_one\".\"configuration\".\"refresh_interval\""},
+	RequestTimeout:  whereHelperint32{field: "\"kentix_one\".\"configuration\".\"request_timeout\""},
+	AssetFilter:     whereHelpernull_JSON{field: "\"kentix_one\".\"configuration\".\"asset_filter\""},
+	Active:          whereHelpernull_Bool{field: "\"kentix_one\".\"configuration\".\"active\""},
+	ProjectIds:      whereHelpertypes_StringArray{field: "\"kentix_one\".\"configuration\".\"project_ids\""},
 }
 
 // ConfigurationRels is where relationship names are stored.
@@ -606,7 +606,7 @@ func (o *Configuration) Devices(mods ...qm.QueryMod) deviceQuery {
 	}
 
 	queryMods = append(queryMods,
-		qm.Where("\"kentixone\".\"device\".\"configuration_id\"=?", o.ID),
+		qm.Where("\"kentix_one\".\"device\".\"configuration_id\"=?", o.ID),
 	)
 
 	return Devices(queryMods...)
@@ -668,8 +668,8 @@ func (configurationL) LoadDevices(ctx context.Context, e boil.ContextExecutor, s
 	}
 
 	query := NewQuery(
-		qm.From(`kentixone.device`),
-		qm.WhereIn(`kentixone.device.configuration_id in ?`, args...),
+		qm.From(`kentix_one.device`),
+		qm.WhereIn(`kentix_one.device.configuration_id in ?`, args...),
 	)
 	if mods != nil {
 		mods.Apply(query)
@@ -749,7 +749,7 @@ func (o *Configuration) AddDevices(ctx context.Context, exec boil.ContextExecuto
 			}
 		} else {
 			updateQuery := fmt.Sprintf(
-				"UPDATE \"kentixone\".\"device\" SET %s WHERE %s",
+				"UPDATE \"kentix_one\".\"device\" SET %s WHERE %s",
 				strmangle.SetParamNames("\"", "\"", 1, []string{"configuration_id"}),
 				strmangle.WhereClause("\"", "\"", 2, devicePrimaryKeyColumns),
 			)
@@ -790,10 +790,10 @@ func (o *Configuration) AddDevices(ctx context.Context, exec boil.ContextExecuto
 
 // Configurations retrieves all the records using an executor.
 func Configurations(mods ...qm.QueryMod) configurationQuery {
-	mods = append(mods, qm.From("\"kentixone\".\"configuration\""))
+	mods = append(mods, qm.From("\"kentix_one\".\"configuration\""))
 	q := NewQuery(mods...)
 	if len(queries.GetSelect(q)) == 0 {
-		queries.SetSelect(q, []string{"\"kentixone\".\"configuration\".*"})
+		queries.SetSelect(q, []string{"\"kentix_one\".\"configuration\".*"})
 	}
 
 	return configurationQuery{q}
@@ -814,7 +814,7 @@ func FindConfiguration(ctx context.Context, exec boil.ContextExecutor, iD int64,
 		sel = strings.Join(strmangle.IdentQuoteSlice(dialect.LQ, dialect.RQ, selectCols), ",")
 	}
 	query := fmt.Sprintf(
-		"select %s from \"kentixone\".\"configuration\" where \"id\"=$1", sel,
+		"select %s from \"kentix_one\".\"configuration\" where \"id\"=$1", sel,
 	)
 
 	q := queries.Raw(query, iD)
@@ -876,9 +876,9 @@ func (o *Configuration) Insert(ctx context.Context, exec boil.ContextExecutor, c
 			return err
 		}
 		if len(wl) != 0 {
-			cache.query = fmt.Sprintf("INSERT INTO \"kentixone\".\"configuration\" (\"%s\") %%sVALUES (%s)%%s", strings.Join(wl, "\",\""), strmangle.Placeholders(dialect.UseIndexPlaceholders, len(wl), 1, 1))
+			cache.query = fmt.Sprintf("INSERT INTO \"kentix_one\".\"configuration\" (\"%s\") %%sVALUES (%s)%%s", strings.Join(wl, "\",\""), strmangle.Placeholders(dialect.UseIndexPlaceholders, len(wl), 1, 1))
 		} else {
-			cache.query = "INSERT INTO \"kentixone\".\"configuration\" %sDEFAULT VALUES%s"
+			cache.query = "INSERT INTO \"kentix_one\".\"configuration\" %sDEFAULT VALUES%s"
 		}
 
 		var queryOutput, queryReturning string
@@ -950,7 +950,7 @@ func (o *Configuration) Update(ctx context.Context, exec boil.ContextExecutor, c
 			return 0, errors.New("appdb: unable to update configuration, could not build whitelist")
 		}
 
-		cache.query = fmt.Sprintf("UPDATE \"kentixone\".\"configuration\" SET %s WHERE %s",
+		cache.query = fmt.Sprintf("UPDATE \"kentix_one\".\"configuration\" SET %s WHERE %s",
 			strmangle.SetParamNames("\"", "\"", 1, wl),
 			strmangle.WhereClause("\"", "\"", len(wl)+1, configurationPrimaryKeyColumns),
 		)
@@ -1041,7 +1041,7 @@ func (o ConfigurationSlice) UpdateAll(ctx context.Context, exec boil.ContextExec
 		args = append(args, pkeyArgs...)
 	}
 
-	sql := fmt.Sprintf("UPDATE \"kentixone\".\"configuration\" SET %s WHERE %s",
+	sql := fmt.Sprintf("UPDATE \"kentix_one\".\"configuration\" SET %s WHERE %s",
 		strmangle.SetParamNames("\"", "\"", 1, colNames),
 		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), len(colNames)+1, configurationPrimaryKeyColumns, len(o)))
 
@@ -1136,7 +1136,7 @@ func (o *Configuration) Upsert(ctx context.Context, exec boil.ContextExecutor, u
 			conflict = make([]string, len(configurationPrimaryKeyColumns))
 			copy(conflict, configurationPrimaryKeyColumns)
 		}
-		cache.query = buildUpsertQueryPostgres(dialect, "\"kentixone\".\"configuration\"", updateOnConflict, ret, update, conflict, insert)
+		cache.query = buildUpsertQueryPostgres(dialect, "\"kentix_one\".\"configuration\"", updateOnConflict, ret, update, conflict, insert)
 
 		cache.valueMapping, err = queries.BindMapping(configurationType, configurationMapping, insert)
 		if err != nil {
@@ -1201,7 +1201,7 @@ func (o *Configuration) Delete(ctx context.Context, exec boil.ContextExecutor) (
 	}
 
 	args := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(o)), configurationPrimaryKeyMapping)
-	sql := "DELETE FROM \"kentixone\".\"configuration\" WHERE \"id\"=$1"
+	sql := "DELETE FROM \"kentix_one\".\"configuration\" WHERE \"id\"=$1"
 
 	if boil.IsDebug(ctx) {
 		writer := boil.DebugWriterFrom(ctx)
@@ -1275,7 +1275,7 @@ func (o ConfigurationSlice) DeleteAll(ctx context.Context, exec boil.ContextExec
 		args = append(args, pkeyArgs...)
 	}
 
-	sql := "DELETE FROM \"kentixone\".\"configuration\" WHERE " +
+	sql := "DELETE FROM \"kentix_one\".\"configuration\" WHERE " +
 		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 1, configurationPrimaryKeyColumns, len(o))
 
 	if boil.IsDebug(ctx) {
@@ -1349,7 +1349,7 @@ func (o *ConfigurationSlice) ReloadAll(ctx context.Context, exec boil.ContextExe
 		args = append(args, pkeyArgs...)
 	}
 
-	sql := "SELECT \"kentixone\".\"configuration\".* FROM \"kentixone\".\"configuration\" WHERE " +
+	sql := "SELECT \"kentix_one\".\"configuration\".* FROM \"kentix_one\".\"configuration\" WHERE " +
 		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 1, configurationPrimaryKeyColumns, len(*o))
 
 	q := queries.Raw(sql, args...)
@@ -1372,7 +1372,7 @@ func ConfigurationExistsG(ctx context.Context, iD int64) (bool, error) {
 // ConfigurationExists checks if the Configuration row exists.
 func ConfigurationExists(ctx context.Context, exec boil.ContextExecutor, iD int64) (bool, error) {
 	var exists bool
-	sql := "select exists(select 1 from \"kentixone\".\"configuration\" where \"id\"=$1 limit 1)"
+	sql := "select exists(select 1 from \"kentix_one\".\"configuration\" where \"id\"=$1 limit 1)"
 
 	if boil.IsDebug(ctx) {
 		writer := boil.DebugWriterFrom(ctx)

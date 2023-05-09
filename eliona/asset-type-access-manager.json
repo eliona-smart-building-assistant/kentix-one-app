@@ -43,7 +43,7 @@
 	],
 	"custom": true,
 	"icon": "closable",
-	"name": "kentixone_access_manager",
+	"name": "kentix_one_access_manager",
 	"translation": {
 		"de": "KentixONE AccessManager",
 		"en": "KentixONE AccessManager"

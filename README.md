@@ -25,7 +25,7 @@ The registration could be done using the reset script.
 
 ### Environment variables ###
 
-- `APPNAME`: must be set to `kentixone`. Some resources use this name to identify the app inside an Eliona environment.
+- `APPNAME`: must be set to `kentix-one`. Some resources use this name to identify the app inside an Eliona environment.
 
 - `CONNECTION_STRING`: configures the [Eliona database](https://github.com/eliona-smart-building-assistant/go-utils/tree/main/db). (e.g. `postgres://user:pass@localhost:5432/iot`)
 
@@ -41,9 +41,9 @@ The registration could be done using the reset script.
 
 The app requires configuration data that remains in the database. To do this, the app creates its own database schema `kentix_one` during initialization. To modify and handle the configuration data the app provides an API access. Have a look at the [API specification](https://eliona-smart-building-assistant.github.io/open-api-docs/?https://raw.githubusercontent.com/eliona-smart-building-assistant/kentix-one-app/develop/openapi.yaml) how the configuration tables should be used.
 
-- `kentixone.configuration`: Configurations for individual KentixONE devices. Editable by API.
+- `kentix-one.configuration`: Configurations for individual KentixONE devices. Editable by API.
 
-- `kentixone.device`: Specific devices, one for each project and configuration. One device corresponds to one asset in Eliona.
+- `kentix-one.device`: Specific devices, one for each project and configuration. One device corresponds to one asset in Eliona.
 
 There is 1:N relationship between configuration and device (i.e. one Configuration could be in multiple projects and each would have it's own device).
 
