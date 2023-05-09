@@ -26,10 +26,10 @@ import (
 )
 
 const (
-	AccessManagerAssetType = "kentixone_access_manager"
-	AlarmManagerAssetType  = "kentixone_alarm_manager"
-	MultiSensorAssetType   = "kentixone_multi_sensor"
-	DoorlockAssetType      = "kentixone_doorlock"
+	AccessManagerAssetType = "kentix_one_access_manager"
+	AlarmManagerAssetType  = "kentix_one_alarm_manager"
+	MultiSensorAssetType   = "kentix_one_multi_sensor"
+	DoorlockAssetType      = "kentix_one_doorlock"
 )
 
 type systemValuesResponse struct {

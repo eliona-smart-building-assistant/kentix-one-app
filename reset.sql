@@ -18,30 +18,30 @@
 -- registration (which you can optionally remove as well by uncommenting the last command).
 
 INSERT INTO public.eliona_store (app_name, category, version)
-VALUES ('kentixone', 'app', '1.0.0')
-    ON CONFLICT (app_name) DO UPDATE SET version = '1.0.0';
+VALUES ('kentix-one', 'app', '1.0.0')
+	ON CONFLICT (app_name) DO UPDATE SET version = '1.0.0';
 
 INSERT INTO public.eliona_app (app_name, enable)
-VALUES ('kentixone', 't')
-    ON CONFLICT (app_name) DO UPDATE SET initialized_at = null;
+VALUES ('kentix-one', 't')
+	ON CONFLICT (app_name) DO UPDATE SET initialized_at = null;
 
-DROP SCHEMA IF EXISTS kentixone CASCADE;
+DROP SCHEMA IF EXISTS kentix_one CASCADE;
 
 DELETE FROM public.heap
 WHERE asset_id IN (
 	SELECT asset_id
 	FROM public.asset
-	WHERE asset_type LIKE E'kentixone\\_%'
+	WHERE asset_type LIKE E'kentix\\_one\\_%'
 );
 
 DELETE FROM public.attribute_schema
-WHERE asset_type LIKE E'kentixone\\_%';
+WHERE asset_type LIKE E'kentix\\_one\\_%';
 
 DELETE FROM public.asset
-WHERE asset_type LIKE E'kentixone\\_%';
+WHERE asset_type LIKE E'kentix\\_one\\_%';
 
 DELETE FROM public.asset_type
-WHERE asset_type LIKE E'kentixone\\_%';
+WHERE asset_type LIKE E'kentix\\_one\\_%';
 
 DELETE FROM public.widget_data
 WHERE widget_id IN (
@@ -61,4 +61,4 @@ WHERE dashboard_id IN (
 DELETE FROM public.dashboard
 WHERE name = 'KentixONE devices';
 
--- DELETE FROM public.eliona_app WHERE app_name = 'kentixone';
+-- DELETE FROM public.eliona_app WHERE app_name = 'kentix-one';
