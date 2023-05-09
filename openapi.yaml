@@ -47,7 +47,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: '#/components/schemas/Configuration'
+                  $ref: "#/components/schemas/Configuration"
     post:
       tags:
         - Configuration
@@ -58,14 +58,14 @@ paths:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Configuration'
+              $ref: "#/components/schemas/Configuration"
       responses:
         "201":
           description: Successfully created a new KentixONE configuration
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Configuration'
+                $ref: "#/components/schemas/Configuration"
   /configs/{config-id}:
     get:
       tags:
@@ -73,7 +73,7 @@ paths:
       summary: Get KentixONE configuration
       description: Gets information about the KentixONE configuration with the given id
       parameters:
-        - $ref: '#/components/parameters/config-id'
+        - $ref: "#/components/parameters/config-id"
       operationId: getConfigurationById
       responses:
         "200":
@@ -81,7 +81,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Configuration'
+                $ref: "#/components/schemas/Configuration"
         "400":
           description: Bad request
     put:
@@ -90,27 +90,27 @@ paths:
       summary: Updates a KentixONE configuration
       description: Updates a KentixONE configuration
       parameters:
-        - $ref: '#/components/parameters/config-id'
+        - $ref: "#/components/parameters/config-id"
       operationId: putConfigurationById
       requestBody:
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/Configuration'
+              $ref: "#/components/schemas/Configuration"
       responses:
         "200":
           description: Successfully updated a KentixONE configuration
           content:
             application/json:
               schema:
-                $ref: '#/components/schemas/Configuration'
+                $ref: "#/components/schemas/Configuration"
     delete:
       tags:
         - Configuration
       summary: Deletes a KentixONE configuration
       description: Removes information about the KentixONE configuration with the given id
       parameters:
-        - $ref: '#/components/parameters/config-id'
+        - $ref: "#/components/parameters/config-id"
       operationId: deleteConfigurationById
       responses:
         "204":
@@ -168,7 +168,7 @@ paths:
           content:
             application/json:
               schema:
-                $ref: 'https://raw.githubusercontent.com/eliona-smart-building-assistant/eliona-api/main/openapi.yaml#/components/schemas/Dashboard'
+                $ref: "https://raw.githubusercontent.com/eliona-smart-building-assistant/eliona-api/main/openapi.yaml#/components/schemas/Dashboard"
         "404":
           description: Template name not found
 
@@ -217,12 +217,12 @@ components:
   schemas:
     Configuration:
       type: object
-      description: Each configuration defines access to one KentixONE device.
+      description: Each configuration defines access to one KentixONE manager device and its satellites.
       properties:
         id:
           type: integer
           format: int64
-          description: Internal identifier for the configured device (created automatically). This identifier have to use always if you remove or update existing configured endpoints.
+          description: Internal identifier for the configured device (created automatically).
           readOnly: true
           nullable: true
         address:
@@ -248,32 +248,13 @@ components:
           default: 120
           nullable: true
         assetFilter:
-          $ref: '#/components/schemas/AssetFilter'
+          $ref: "#/components/schemas/AssetFilter"
           nullable: true
-          example: 
+          example:
             [
-              [
-                {
-                  "parameter": "deviceName",
-                  "regex": "Main.*"
-                },
-                {
-                  "parameter": "deviceType",
-                  "regex": "110"
-                }
-              ],
-              [
-                {
-                  "parameter": "macAddress",
-                  "regex": "(70:82:0e:12:28:cc|70:56:06:12:.*)"
-                }
-              ],
-              [
-                {
-                  "parameter": "deviceName",
-                  "regex": "Multi.*"
-                }
-              ]
+              [{ "parameter": "deviceName", "regex": "Main.*" }, { "parameter": "deviceType", "regex": "110" }],
+              [{ "parameter": "macAddress", "regex": "(70:82:0e:12:28:cc|70:56:06:12:.*)" }],
+              [{ "parameter": "deviceName", "regex": "Multi.*" }],
             ]
         active:
           type: boolean
@@ -298,7 +279,7 @@ components:
           type: string
           description: The project ID this asset is assigned to
         configuration:
-          $ref: '#/components/schemas/Configuration'
+          $ref: "#/components/schemas/Configuration"
         assetID:
           type: integer
           description: Eliona asset ID
@@ -314,7 +295,7 @@ components:
         type: array
         description: Array of rules combined by logical AND
         items:
-          $ref: '#/components/schemas/FilterRule'
+          $ref: "#/components/schemas/FilterRule"
 
     FilterRule:
       type: object
