@@ -126,10 +126,10 @@ var DeviceWhere = struct {
 	SerialNumber    whereHelperstring
 	AssetID         whereHelpernull_Int32
 }{
-	ConfigurationID: whereHelperint64{field: "\"kentixone\".\"device\".\"configuration_id\""},
-	ProjectID:       whereHelperstring{field: "\"kentixone\".\"device\".\"project_id\""},
-	SerialNumber:    whereHelperstring{field: "\"kentixone\".\"device\".\"serial_number\""},
-	AssetID:         whereHelpernull_Int32{field: "\"kentixone\".\"device\".\"asset_id\""},
+	ConfigurationID: whereHelperint64{field: "\"kentix_one\".\"device\".\"configuration_id\""},
+	ProjectID:       whereHelperstring{field: "\"kentix_one\".\"device\".\"project_id\""},
+	SerialNumber:    whereHelperstring{field: "\"kentix_one\".\"device\".\"serial_number\""},
+	AssetID:         whereHelpernull_Int32{field: "\"kentix_one\".\"device\".\"asset_id\""},
 }
 
 // DeviceRels is where relationship names are stored.
@@ -534,8 +534,8 @@ func (deviceL) LoadConfiguration(ctx context.Context, e boil.ContextExecutor, si
 	}
 
 	query := NewQuery(
-		qm.From(`kentixone.configuration`),
-		qm.WhereIn(`kentixone.configuration.id in ?`, args...),
+		qm.From(`kentix_one.configuration`),
+		qm.WhereIn(`kentix_one.configuration.id in ?`, args...),
 	)
 	if mods != nil {
 		mods.Apply(query)
@@ -616,7 +616,7 @@ func (o *Device) SetConfiguration(ctx context.Context, exec boil.ContextExecutor
 	}
 
 	updateQuery := fmt.Sprintf(
-		"UPDATE \"kentixone\".\"device\" SET %s WHERE %s",
+		"UPDATE \"kentix_one\".\"device\" SET %s WHERE %s",
 		strmangle.SetParamNames("\"", "\"", 1, []string{"configuration_id"}),
 		strmangle.WhereClause("\"", "\"", 2, devicePrimaryKeyColumns),
 	)
@@ -653,10 +653,10 @@ func (o *Device) SetConfiguration(ctx context.Context, exec boil.ContextExecutor
 
 // Devices retrieves all the records using an executor.
 func Devices(mods ...qm.QueryMod) deviceQuery {
-	mods = append(mods, qm.From("\"kentixone\".\"device\""))
+	mods = append(mods, qm.From("\"kentix_one\".\"device\""))
 	q := NewQuery(mods...)
 	if len(queries.GetSelect(q)) == 0 {
-		queries.SetSelect(q, []string{"\"kentixone\".\"device\".*"})
+		queries.SetSelect(q, []string{"\"kentix_one\".\"device\".*"})
 	}
 
 	return deviceQuery{q}
@@ -677,7 +677,7 @@ func FindDevice(ctx context.Context, exec boil.ContextExecutor, configurationID 
 		sel = strings.Join(strmangle.IdentQuoteSlice(dialect.LQ, dialect.RQ, selectCols), ",")
 	}
 	query := fmt.Sprintf(
-		"select %s from \"kentixone\".\"device\" where \"configuration_id\"=$1 AND \"project_id\"=$2 AND \"serial_number\"=$3", sel,
+		"select %s from \"kentix_one\".\"device\" where \"configuration_id\"=$1 AND \"project_id\"=$2 AND \"serial_number\"=$3", sel,
 	)
 
 	q := queries.Raw(query, configurationID, projectID, serialNumber)
@@ -739,9 +739,9 @@ func (o *Device) Insert(ctx context.Context, exec boil.ContextExecutor, columns 
 			return err
 		}
 		if len(wl) != 0 {
-			cache.query = fmt.Sprintf("INSERT INTO \"kentixone\".\"device\" (\"%s\") %%sVALUES (%s)%%s", strings.Join(wl, "\",\""), strmangle.Placeholders(dialect.UseIndexPlaceholders, len(wl), 1, 1))
+			cache.query = fmt.Sprintf("INSERT INTO \"kentix_one\".\"device\" (\"%s\") %%sVALUES (%s)%%s", strings.Join(wl, "\",\""), strmangle.Placeholders(dialect.UseIndexPlaceholders, len(wl), 1, 1))
 		} else {
-			cache.query = "INSERT INTO \"kentixone\".\"device\" %sDEFAULT VALUES%s"
+			cache.query = "INSERT INTO \"kentix_one\".\"device\" %sDEFAULT VALUES%s"
 		}
 
 		var queryOutput, queryReturning string
@@ -813,7 +813,7 @@ func (o *Device) Update(ctx context.Context, exec boil.ContextExecutor, columns 
 			return 0, errors.New("appdb: unable to update device, could not build whitelist")
 		}
 
-		cache.query = fmt.Sprintf("UPDATE \"kentixone\".\"device\" SET %s WHERE %s",
+		cache.query = fmt.Sprintf("UPDATE \"kentix_one\".\"device\" SET %s WHERE %s",
 			strmangle.SetParamNames("\"", "\"", 1, wl),
 			strmangle.WhereClause("\"", "\"", len(wl)+1, devicePrimaryKeyColumns),
 		)
@@ -904,7 +904,7 @@ func (o DeviceSlice) UpdateAll(ctx context.Context, exec boil.ContextExecutor, c
 		args = append(args, pkeyArgs...)
 	}
 
-	sql := fmt.Sprintf("UPDATE \"kentixone\".\"device\" SET %s WHERE %s",
+	sql := fmt.Sprintf("UPDATE \"kentix_one\".\"device\" SET %s WHERE %s",
 		strmangle.SetParamNames("\"", "\"", 1, colNames),
 		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), len(colNames)+1, devicePrimaryKeyColumns, len(o)))
 
@@ -999,7 +999,7 @@ func (o *Device) Upsert(ctx context.Context, exec boil.ContextExecutor, updateOn
 			conflict = make([]string, len(devicePrimaryKeyColumns))
 			copy(conflict, devicePrimaryKeyColumns)
 		}
-		cache.query = buildUpsertQueryPostgres(dialect, "\"kentixone\".\"device\"", updateOnConflict, ret, update, conflict, insert)
+		cache.query = buildUpsertQueryPostgres(dialect, "\"kentix_one\".\"device\"", updateOnConflict, ret, update, conflict, insert)
 
 		cache.valueMapping, err = queries.BindMapping(deviceType, deviceMapping, insert)
 		if err != nil {
@@ -1064,7 +1064,7 @@ func (o *Device) Delete(ctx context.Context, exec boil.ContextExecutor) (int64, 
 	}
 
 	args := queries.ValuesFromMapping(reflect.Indirect(reflect.ValueOf(o)), devicePrimaryKeyMapping)
-	sql := "DELETE FROM \"kentixone\".\"device\" WHERE \"configuration_id\"=$1 AND \"project_id\"=$2 AND \"serial_number\"=$3"
+	sql := "DELETE FROM \"kentix_one\".\"device\" WHERE \"configuration_id\"=$1 AND \"project_id\"=$2 AND \"serial_number\"=$3"
 
 	if boil.IsDebug(ctx) {
 		writer := boil.DebugWriterFrom(ctx)
@@ -1138,7 +1138,7 @@ func (o DeviceSlice) DeleteAll(ctx context.Context, exec boil.ContextExecutor) (
 		args = append(args, pkeyArgs...)
 	}
 
-	sql := "DELETE FROM \"kentixone\".\"device\" WHERE " +
+	sql := "DELETE FROM \"kentix_one\".\"device\" WHERE " +
 		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 1, devicePrimaryKeyColumns, len(o))
 
 	if boil.IsDebug(ctx) {
@@ -1212,7 +1212,7 @@ func (o *DeviceSlice) ReloadAll(ctx context.Context, exec boil.ContextExecutor) 
 		args = append(args, pkeyArgs...)
 	}
 
-	sql := "SELECT \"kentixone\".\"device\".* FROM \"kentixone\".\"device\" WHERE " +
+	sql := "SELECT \"kentix_one\".\"device\".* FROM \"kentix_one\".\"device\" WHERE " +
 		strmangle.WhereClauseRepeated(string(dialect.LQ), string(dialect.RQ), 1, devicePrimaryKeyColumns, len(*o))
 
 	q := queries.Raw(sql, args...)
@@ -1235,7 +1235,7 @@ func DeviceExistsG(ctx context.Context, configurationID int64, projectID string,
 // DeviceExists checks if the Device row exists.
 func DeviceExists(ctx context.Context, exec boil.ContextExecutor, configurationID int64, projectID string, serialNumber string) (bool, error) {
 	var exists bool
-	sql := "select exists(select 1 from \"kentixone\".\"device\" where \"configuration_id\"=$1 AND \"project_id\"=$2 AND \"serial_number\"=$3 limit 1)"
+	sql := "select exists(select 1 from \"kentix_one\".\"device\" where \"configuration_id\"=$1 AND \"project_id\"=$2 AND \"serial_number\"=$3 limit 1)"
 
 	if boil.IsDebug(ctx) {
 		writer := boil.DebugWriterFrom(ctx)

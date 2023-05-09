@@ -160,7 +160,7 @@
 	],
 	"custom": true,
 	"icon": "environment",
-	"name": "kentixone_multi_sensor",
+	"name": "kentix_one_multi_sensor",
 	"translation": {
 		"de": "KentixONE MultiSensor",
 		"en": "KentixONE MultiSensor"
