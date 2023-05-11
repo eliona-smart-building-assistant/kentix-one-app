@@ -58,6 +58,9 @@ WHERE dashboard_id IN (
 	WHERE name = 'KentixONE devices'
 );
 
+DELETE FROM public.widget_type
+WHERE name LIKE 'KentixONE%';
+
 DELETE FROM public.dashboard
 WHERE name = 'KentixONE devices';
 

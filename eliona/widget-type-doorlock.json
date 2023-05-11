@@ -12,7 +12,6 @@
 	"withTimespan": true,
 	"elements": [
 		{
-			"id": 44,
 			"category": "input",
 			"sequence": 1,
 			"config": {
