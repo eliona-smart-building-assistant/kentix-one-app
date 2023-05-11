@@ -124,8 +124,8 @@ func upsertDoorlockData(config apiserver.Configuration, projectId string, doorlo
 	return nil
 }
 
-func UpsertMultiSensorData(config apiserver.Configuration, measurements kentix.Measurements) error {
-	sensors, err := conf.GetConfigDevices(context.Background(), config)
+func UpsertMultiSensorData(config apiserver.Configuration, deviceId string, measurements kentix.Measurements) error {
+	sensors, err := conf.GetConfigDevices(context.Background(), config, deviceId)
 	if err != nil {
 		return fmt.Errorf("getting config sensors: %v", err)
 	}

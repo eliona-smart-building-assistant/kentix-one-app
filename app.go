@@ -114,7 +114,7 @@ func collectDataForConfig(config apiserver.Configuration) {
 		}
 
 		if device.Measurements != nil {
-			if err := eliona.UpsertMultiSensorData(config, *device.Measurements); err != nil {
+			if err := eliona.UpsertMultiSensorData(config, device.UUID, *device.Measurements); err != nil {
 				log.Error("eliona", "upserting MultiSensor data: %v", err)
 				return
 			}
