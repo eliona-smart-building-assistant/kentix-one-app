@@ -149,12 +149,13 @@ func GetConfigs(ctx context.Context) ([]apiserver.Configuration, error) {
 	return apiConfigs, nil
 }
 
-func GetConfigDevices(ctx context.Context, config apiserver.Configuration) ([]apiserver.Device, error) {
+func GetConfigDevices(ctx context.Context, config apiserver.Configuration, deviceId string) ([]apiserver.Device, error) {
 	if config.Id == nil {
 		return nil, fmt.Errorf("shouldn't happen: config ID is null")
 	}
 	dbDevices, err := appdb.Devices(
 		appdb.DeviceWhere.ConfigurationID.EQ(*config.Id),
+		appdb.DeviceWhere.SerialNumber.EQ(deviceId),
 	).AllG(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("looking up sensors in DB: %v", err)
