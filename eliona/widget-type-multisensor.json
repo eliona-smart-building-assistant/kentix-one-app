@@ -1,0 +1,19 @@
+{
+	"name": "KentixONE MultiSensor",
+	"custom": true,
+	"translation": null,
+	"icon": "widgetMeetingRoom",
+	"withAlarm": true,
+	"withTimespan": true,
+	"elements": [
+		{
+			"category": "value",
+			"sequence": 1,
+			"config": {
+				"description": "show some occupancy, some air quality",
+				"text": "MultiSensor",
+				"variant": "tiles"
+			}
+		}
+	]
+}
