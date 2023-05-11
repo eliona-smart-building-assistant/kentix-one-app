@@ -41,5 +41,8 @@ func InitEliona(connection db.Connection) error {
 	if err := dashboard.InitWidgetTypeFile("eliona/widget-type-doorlock.json")(connection); err != nil {
 		return fmt.Errorf("init doorlock widget type: %v", err)
 	}
+	if err := dashboard.InitWidgetTypeFile("eliona/widget-type-multisensor.json")(connection); err != nil {
+		return fmt.Errorf("init multisensor widget type: %v", err)
+	}
 	return nil
 }
