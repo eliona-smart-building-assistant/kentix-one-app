@@ -67,10 +67,12 @@ This app creates Eliona asset types and attribute sets during initialization.
 
 The data is written for each KentixONE device, structured into different subtypes of Elinoa assets. The following subtypes are defined:
 
-- `Input`: Current values reported by KentixONE sensors (i.e. MultiSensor readings).
 - `Info`: Static data which specifies a KentixONE device like address and firmware info.
+- `Input`: Current values reported by KentixONE sensors (i.e. MultiSensor readings).
 
-### Continuous asset creation
+This app also allows the KentixONE devices to be controlled from Eliona environment, by `Output` subtypes.
+
+### Continuous asset creation ###
 
 Assets for all devices connected to the configured "Manager" device are created automatically when the configuration is added.
 

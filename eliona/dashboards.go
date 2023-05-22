@@ -49,7 +49,7 @@ func KentixDevicesDashboard(projectId string) (api.Dashboard, error) {
 	}
 
 	var doorlockButtons []api.WidgetData
-	var doorlockBatteryButtons []api.WidgetData
+	var doorlockBatteries []api.WidgetData
 	for _, doorlock := range doorlocks {
 		btn := api.WidgetData{
 			ElementSequence: nullableInt32(1),
@@ -73,7 +73,7 @@ func KentixDevicesDashboard(projectId string) (api.Dashboard, error) {
 				"subtype":            "input",
 			},
 		}
-		doorlockBatteryButtons = append(doorlockBatteryButtons, bat)
+		doorlockBatteries = append(doorlockBatteries, bat)
 	}
 	doorsWidget := api.Widget{
 		WidgetTypeName: "KentixONE doorlock",
@@ -91,7 +91,7 @@ func KentixDevicesDashboard(projectId string) (api.Dashboard, error) {
 			"size":     1,
 			"timespan": 7,
 		},
-		Data: doorlockBatteryButtons,
+		Data: doorlockBatteries,
 	}
 	dashboard.Widgets = append(dashboard.Widgets, doorsBatteryWidget)
 
