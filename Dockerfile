@@ -13,7 +13,7 @@
 #  DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 #  OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-FROM golang:1.20-alpine3.17 AS build
+FROM eliona/base-golang:latest-1-alpine AS build
 
 WORKDIR /
 COPY . ./
@@ -23,13 +23,15 @@ RUN apk add git
 RUN go mod download
 
 RUN DATE=$(date) && \
-	GIT_COMMIT=$(git rev-list -1 HEAD) && \
-	go build -ldflags "-X 'kentix-one-app/apiservices.BuildTimestamp=$DATE' -X 'kentix-one-app/apiservices.GitCommit=$GIT_COMMIT'" -o ../app
+    GIT_COMMIT=$(git rev-list -1 HEAD) && \
+    go build -ldflags "-X 'kentix-one/apiservices.BuildTimestamp=$DATE' -X 'kentix-one/apiservices.GitCommit=$GIT_COMMIT'" -o ../app
 
-FROM alpine:3.17 AS target
+FROM eliona/base-alpine:latest-3.17 AS target
 
 COPY --from=build /app ./
 COPY conf/*.sql ./conf/
+COPY eliona/*.json ./eliona/
+COPY openapi.yaml ./
 
 ENV APPNAME=kentix-one
 
