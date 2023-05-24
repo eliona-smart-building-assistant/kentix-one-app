@@ -62,7 +62,7 @@ func collectData() {
 				"Project IDs: %v\n",
 				*config.Id,
 				config.Address,
-				config.ApiKey,
+				"**************",
 				*config.Enable,
 				config.RefreshInterval,
 				*config.RequestTimeout,
