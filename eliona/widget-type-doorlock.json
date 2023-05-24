@@ -1,6 +1,6 @@
 {
 	"name": "kentix_one_doolock",
-	"custom": true,
+	"custom": false,
 	"translation": {
 		"de": "Türschloss",
 		"en": "Doorlock",

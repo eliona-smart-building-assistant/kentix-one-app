@@ -1,6 +1,6 @@
 {
 	"name": "kentix_one_multi_sensor",
-	"custom": true,
+	"custom": false,
 	"translation": {
 		"de": "KentixONE MultiSensor",
 		"en": "KentixONE MultiSensor"
