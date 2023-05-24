@@ -1,15 +1,17 @@
 {
   "displayName": {
-    "en": "App template",
-    "de": "App Vorlage"
+    "en": "KentixONE app",
+    "de": "KentixONE app"
   },
   "description": {
-    "en": "This template can be used to create an app stub for an Eliona environment.",
-    "de": "Diese Vorlage kann verwendet werden um eine App für Eliona zu erstellen."
+    "en": "The KentixONE app allows access to KentixONE devices.",
+    "de": "Die KentixONE App ermöglicht den Zugriff auf KentixONE Geräte."
   },
   "dashboardTemplateNames": [
     "Kentix devices"
   ],
-  "apiSpecificationPath": "/v1/version/openapi.json",
-  "useEnvironment": [ "CONNECTION_STRING", "API_ENDPOINT", "API_TOKEN" ]
+  "apiUrl": "v1",
+  "apiSpecificationPath": "/version/openapi.json",
+  "useEnvironment": [ "CONNECTION_STRING", "API_ENDPOINT", "API_TOKEN" ],
+  "documentationUrl": "https://doc.eliona.io/collection/eliona-apps/externe-apps/kentixone"
 }
