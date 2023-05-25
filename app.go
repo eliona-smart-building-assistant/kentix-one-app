@@ -62,7 +62,7 @@ func collectData() {
 				"Project IDs: %v\n",
 				*config.Id,
 				config.Address,
-				config.ApiKey,
+				"**************",
 				*config.Enable,
 				config.RefreshInterval,
 				*config.RequestTimeout,
@@ -161,14 +161,13 @@ func listenForOutputChanges() {
 			log.Error("eliona", "no 'open' attribute in data")
 			return
 		}
-		switch open {
+		switch open.(float64) {
 		case 0:
-			return
+			continue
 		case 1:
 			openDoorlock(output.AssetId)
 		default:
 			log.Error("eliona", "invalid value '%v' in 'open' attribute", open)
-			return
 		}
 	}
 }
@@ -189,6 +188,7 @@ func openDoorlock(assetID int32) {
 			log.Error("conf", "getting device ID from asset (%v) id: %v", assetID, err)
 			return
 		}
+		log.Debug("kentix", "opening doorlock %v", doorlockID)
 		if err := kentix.OpenDoorlock(doorlockID, config); err != nil {
 			log.Error("kentix", "opening doorlock %v: %v", doorlockID, err)
 			return

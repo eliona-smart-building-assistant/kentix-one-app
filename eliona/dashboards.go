@@ -51,17 +51,37 @@ func KentixDevicesDashboard(projectId string) (api.Dashboard, error) {
 	var doorlockButtons []api.WidgetData
 	var doorlockBatteries []api.WidgetData
 	for _, doorlock := range doorlocks {
-		btn := api.WidgetData{
+		name := "Unnamed"
+		if doorlock.Name.IsSet() {
+			name = *doorlock.Name.Get()
+		}
+
+		btnSetpoint := api.WidgetData{
 			ElementSequence: nullableInt32(1),
 			AssetId:         doorlock.Id,
 			Data: map[string]interface{}{
 				"aggregatedDataType": "heap",
 				"attribute":          "open",
-				"description":        doorlock.Name,
+				"description":        name,
+				"key":                "_SETPOINT",
 				"subtype":            "output",
+				"seq":                0,
 			},
 		}
-		doorlockButtons = append(doorlockButtons, btn)
+		btnCurrent := api.WidgetData{
+			ElementSequence: nullableInt32(1),
+			AssetId:         doorlock.Id,
+			Data: map[string]interface{}{
+				"aggregatedDataType": "heap",
+				"attribute":          "open",
+				"description":        name,
+				"key":                "_CURRENT",
+				"subtype":            "output",
+				"seq":                0,
+			},
+		}
+		doorlockButtons = append(doorlockButtons, btnSetpoint)
+		doorlockButtons = append(doorlockButtons, btnCurrent)
 
 		bat := api.WidgetData{
 			ElementSequence: nullableInt32(1),
@@ -69,14 +89,14 @@ func KentixDevicesDashboard(projectId string) (api.Dashboard, error) {
 			Data: map[string]interface{}{
 				"aggregatedDataType": "heap",
 				"attribute":          "battery",
-				"description":        fmt.Sprintf("%s - battery", doorlock.Name),
+				"description":        fmt.Sprintf("%s - Battery", name),
 				"subtype":            "input",
 			},
 		}
 		doorlockBatteries = append(doorlockBatteries, bat)
 	}
 	doorsWidget := api.Widget{
-		WidgetTypeName: "KentixONE doorlock",
+		WidgetTypeName: "kentix_one_doolock",
 		Details: map[string]interface{}{
 			"size":     1,
 			"timespan": 7,
@@ -86,7 +106,7 @@ func KentixDevicesDashboard(projectId string) (api.Dashboard, error) {
 	dashboard.Widgets = append(dashboard.Widgets, doorsWidget)
 
 	doorsBatteryWidget := api.Widget{
-		WidgetTypeName: "KentixONE Multisensor",
+		WidgetTypeName: "kentix_one_multi_sensor",
 		Details: map[string]interface{}{
 			"size":     1,
 			"timespan": 7,
@@ -97,7 +117,7 @@ func KentixDevicesDashboard(projectId string) (api.Dashboard, error) {
 
 	for _, multiSensor := range multiSensors {
 		widget := api.Widget{
-			WidgetTypeName: "KentixONE Multisensor",
+			WidgetTypeName: "kentix_one_multi_sensor",
 			AssetId:        multiSensor.Id,
 			Details: map[string]interface{}{
 				"size":     2,

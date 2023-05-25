@@ -1,7 +1,10 @@
 {
-	"name": "KentixONE MultiSensor",
-	"custom": true,
-	"translation": null,
+	"name": "kentix_one_multi_sensor",
+	"custom": false,
+	"translation": {
+		"de": "KentixONE MultiSensor",
+		"en": "KentixONE MultiSensor"
+	},
 	"icon": "widgetMeetingRoom",
 	"withAlarm": true,
 	"withTimespan": true,
