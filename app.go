@@ -93,7 +93,7 @@ func collectDataForConfig(config apiserver.Configuration) {
 	}
 	for _, device := range devices {
 		if config.AssetFilter != nil {
-			shouldCreate, err := conf.DoesDeviceAdhereToFilter(context.Background(), config, device)
+			shouldCreate, err := device.AdheresToFilter(config)
 			if err != nil {
 				log.Error("config", "determining whether device adheres to filter: %v", err)
 				return
@@ -128,7 +128,7 @@ func collectDataForConfig(config apiserver.Configuration) {
 	}
 	for _, doorlock := range doorlocks {
 		if config.AssetFilter != nil {
-			shouldCreate, err := conf.DoesDoorlockAdhereToFilter(context.Background(), config, doorlock)
+			shouldCreate, err := doorlock.AdheresToFilter(config)
 			if err != nil {
 				log.Error("config", "determining whether doorlock adheres to filter: %v", err)
 				return
