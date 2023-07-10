@@ -6,7 +6,7 @@ require (
 	github.com/eliona-smart-building-assistant/app-integration-tests v0.0.5
 	github.com/eliona-smart-building-assistant/go-eliona v1.9.6
 	github.com/eliona-smart-building-assistant/go-eliona-api-client/v2 v2.4.14
-	github.com/eliona-smart-building-assistant/go-utils v1.0.22
+	github.com/eliona-smart-building-assistant/go-utils v1.0.30
 	github.com/friendsofgo/errors v0.9.2
 	github.com/gorilla/mux v1.8.0
 	github.com/volatiletech/null/v8 v8.1.2
