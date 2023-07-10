@@ -1,0 +1,11 @@
+name: Integration Test
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 0 * * *'  # Runs the job at 00:00 UTC every day
+    
+jobs:
+  app-integration-test:
+    uses: eliona-smart-building-assistant/app-integration-tests/.github/workflows/app-integration-test.yml@main
+    secrets: inherit
