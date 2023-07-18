@@ -182,7 +182,7 @@ func upsertData(subtype api.DataSubtype, assetId int32, payload any) error {
 	statusData.Timestamp = *api.NewNullableTime(&now)
 	statusData.AssetId = assetId
 	statusData.Data = common.StructToMap(payload)
-	if err := asset.UpsertDataIfAssetExists[any](statusData); err != nil {
+	if err := asset.UpsertDataIfAssetExists(statusData); err != nil {
 		return fmt.Errorf("upserting data: %v", err)
 	}
 	return nil

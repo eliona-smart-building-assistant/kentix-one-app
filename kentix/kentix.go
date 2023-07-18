@@ -17,6 +17,7 @@ package kentix
 
 import (
 	"encoding/json"
+	"github.com/eliona-smart-building-assistant/go-eliona/utils"
 	"fmt"
 	"kentix-one/apiserver"
 	"net/url"
@@ -52,7 +53,7 @@ type DeviceInfo struct {
 
 func (doorlock *DeviceInfo) AdheresToFilter(config apiserver.Configuration) (bool, error) {
 	f := apiFilterToCommonFilter(config.AssetFilter)
-	fp, err := structToMap(doorlock)
+	fp, err := utils.StructToMap(doorlock)
 	if err != nil {
 		return false, fmt.Errorf("converting struct to map: %v", err)
 	}
@@ -142,7 +143,7 @@ type DoorLock struct {
 
 func (doorlock *DoorLock) AdheresToFilter(config apiserver.Configuration) (bool, error) {
 	f := apiFilterToCommonFilter(config.AssetFilter)
-	fp, err := structToMap(doorlock)
+	fp, err := utils.StructToMap(doorlock)
 	if err != nil {
 		return false, fmt.Errorf("converting struct to map: %v", err)
 	}
@@ -228,6 +229,7 @@ func OpenDoorlock(id int, conf apiserver.Configuration) error {
 	return nil
 }
 
+
 // To be moved to go-utils.
 
 func structToMap(input interface{}) (map[string]string, error) {
@@ -311,8 +313,6 @@ func parseElionaTag(field reflect.StructField) (*FieldTag, error) {
 		Filterable: filterable,
 	}, nil
 }
-
-// ^^ To be moved to go-utils.
 
 func apiFilterToCommonFilter(input [][]apiserver.FilterRule) [][]common.FilterRule {
 	result := make([][]common.FilterRule, len(input))
