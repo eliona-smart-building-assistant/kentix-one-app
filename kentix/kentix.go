@@ -17,13 +17,12 @@ package kentix
 
 import (
 	"encoding/json"
-	"github.com/eliona-smart-building-assistant/go-eliona/utils"
 	"fmt"
 	"kentix-one/apiserver"
 	"net/url"
-	"reflect"
-	"strings"
 	"time"
+
+	"github.com/eliona-smart-building-assistant/go-eliona/utils"
 
 	"github.com/eliona-smart-building-assistant/go-utils/common"
 	"github.com/eliona-smart-building-assistant/go-utils/http"
@@ -227,91 +226,6 @@ func OpenDoorlock(id int, conf apiserver.Configuration) error {
 		return fmt.Errorf("reading response from %s: %v", url, err)
 	}
 	return nil
-}
-
-
-// To be moved to go-utils.
-
-func structToMap(input interface{}) (map[string]string, error) {
-	if input == nil {
-		return nil, fmt.Errorf("input is nil")
-	}
-
-	inputValue := reflect.ValueOf(input)
-	inputType := reflect.TypeOf(input)
-
-	if inputValue.Kind() == reflect.Ptr {
-		inputValue = inputValue.Elem()
-		inputType = inputType.Elem()
-	}
-
-	if inputValue.Kind() != reflect.Struct {
-		return nil, fmt.Errorf("input is not a struct")
-	}
-
-	output := make(map[string]string)
-	for i := 0; i < inputValue.NumField(); i++ {
-		fieldType := inputType.Field(i)
-
-		fieldTag, err := parseElionaTag(fieldType)
-		if err != nil {
-			return nil, err
-		}
-
-		if !fieldTag.Filterable {
-			continue
-		}
-
-		fieldValue := inputValue.Field(i)
-		output[fieldTag.ParamName] = fieldValue.String()
-	}
-
-	return output, nil
-}
-
-type SubType string
-
-const (
-	Status SubType = "status"
-	Info   SubType = "info"
-	Input  SubType = "input"
-	Output SubType = "output"
-)
-
-type FieldTag struct {
-	ParamName  string
-	SubType    SubType
-	Filterable bool
-}
-
-func parseElionaTag(field reflect.StructField) (*FieldTag, error) {
-	elionaTag := field.Tag.Get("eliona")
-	subtypeTag := field.Tag.Get("subtype")
-
-	elionaTagParts := strings.Split(elionaTag, ",")
-	if len(elionaTagParts) < 1 {
-		return nil, fmt.Errorf("invalid eliona tag on field %s", field.Name)
-	}
-
-	paramName := elionaTagParts[0]
-	filterable := len(elionaTagParts) > 1 && elionaTagParts[1] == "filterable"
-
-	var subType SubType
-	if subtypeTag != "" {
-		subType = SubType(subtypeTag)
-		switch subType {
-		case Status, Info, Input, Output:
-			// valid subtype
-		default:
-			return nil, fmt.Errorf("invalid subtype in eliona tag on field %s", field.Name)
-		}
-	}
-
-	return &FieldTag{
-		ParamName:  paramName,
-		SubType:    subType,
-		Filterable: filterable,
-	}, nil
 }
 
 func apiFilterToCommonFilter(input [][]apiserver.FilterRule) [][]common.FilterRule {
