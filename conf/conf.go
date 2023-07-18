@@ -22,7 +22,6 @@ import (
 	"fmt"
 	"kentix-one/apiserver"
 	"kentix-one/appdb"
-	"kentix-one/kentix"
 	"strconv"
 
 	"github.com/eliona-smart-building-assistant/go-utils/common"
@@ -236,46 +235,4 @@ func SetAllConfigsInactive(ctx context.Context) (int64, error) {
 	return appdb.Configurations().UpdateAllG(ctx, appdb.M{
 		appdb.ConfigurationColumns.Active: false,
 	})
-}
-
-func DoesDeviceAdhereToFilter(ctx context.Context, config apiserver.Configuration, device kentix.DeviceInfo) (bool, error) {
-	fp := map[string]string{
-		"deviceName":    device.Name,
-		"ipAddress":     device.IPAddress,
-		"macAddress":    device.MacAddress,
-		"deviceSerial":  device.UUID,
-		"deviceType":    fmt.Sprint(device.Type),
-		"deviceVersion": device.Version,
-	}
-	adheres, err := common.Filter(apiFilterToCommonFilter(config.AssetFilter), fp)
-	if err != nil {
-		return false, err
-	}
-	return adheres, nil
-}
-
-func DoesDoorlockAdhereToFilter(ctx context.Context, config apiserver.Configuration, doorlock kentix.DoorLock) (bool, error) {
-	fp := map[string]string{
-		"doorlockName":   doorlock.Name,
-		"doorlockSerial": fmt.Sprint(doorlock.ID),
-	}
-	adheres, err := common.Filter(apiFilterToCommonFilter(config.AssetFilter), fp)
-	if err != nil {
-		return false, err
-	}
-	return adheres, nil
-}
-
-func apiFilterToCommonFilter(input [][]apiserver.FilterRule) [][]common.FilterRule {
-	result := make([][]common.FilterRule, len(input))
-	for i := 0; i < len(input); i++ {
-		result[i] = make([]common.FilterRule, len(input[i]))
-		for j := 0; j < len(input[i]); j++ {
-			result[i][j] = common.FilterRule{
-				Parameter: input[i][j].Parameter,
-				Regex:     input[i][j].Regex,
-			}
-		}
-	}
-	return result
 }

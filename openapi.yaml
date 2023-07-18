@@ -254,7 +254,7 @@ components:
             [
               [{ "parameter": "deviceName", "regex": "Main.*" }, { "parameter": "deviceType", "regex": "110" }],
               [{ "parameter": "macAddress", "regex": "(70:82:0e:12:28:cc|70:56:06:12:.*)" }],
-              [{ "parameter": "deviceName", "regex": "Multi.*" }],
+              [{ "parameter": "address", "regex": "192\\.168\\.1\\..*" }],
             ]
         active:
           type: boolean
