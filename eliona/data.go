@@ -47,7 +47,7 @@ type deviceInfoPayload struct {
 }
 
 func upsertDeviceInfo(config apiserver.Configuration, projectId string, device kentix.DeviceInfo) error {
-	log.Debug("Eliona", "upserting data for device: config %d and device '%s'", config.Id, device.UUID)
+	log.Debug("Eliona", "upserting data for device: config %d and device '%s'", *config.Id, device.UUID)
 	assetId, err := conf.GetAssetId(context.Background(), config, projectId, device.UUID)
 	if err != nil {
 		return err
@@ -92,7 +92,7 @@ type doorlockOutputDataPayload struct {
 }
 
 func upsertDoorlockData(config apiserver.Configuration, projectId string, doorlock kentix.DoorLock) error {
-	log.Debug("Eliona", "upserting data for doorlock: config %d and doorlock '%s'", config.Id, doorlock.ID)
+	log.Debug("Eliona", "upserting data for doorlock: config %d and doorlock '%d'", *config.Id, doorlock.ID)
 	assetId, err := conf.GetAssetId(context.Background(), config, projectId, fmt.Sprint(doorlock.ID))
 	if err != nil {
 		return err
@@ -182,7 +182,7 @@ func upsertData(subtype api.DataSubtype, assetId int32, payload any) error {
 	statusData.Timestamp = *api.NewNullableTime(&now)
 	statusData.AssetId = assetId
 	statusData.Data = common.StructToMap(payload)
-	if err := asset.UpsertDataIfAssetExists[any](statusData); err != nil {
+	if err := asset.UpsertDataIfAssetExists(statusData); err != nil {
 		return fmt.Errorf("upserting data: %v", err)
 	}
 	return nil

@@ -22,6 +22,9 @@ import (
 	"net/url"
 	"time"
 
+	"github.com/eliona-smart-building-assistant/go-eliona/utils"
+
+	"github.com/eliona-smart-building-assistant/go-utils/common"
 	"github.com/eliona-smart-building-assistant/go-utils/http"
 )
 
@@ -37,14 +40,27 @@ type systemValuesResponse struct {
 }
 
 type DeviceInfo struct {
-	Name         string        `json:"name"`
-	IPAddress    string        `json:"address"`
-	MacAddress   string        `json:"mac_address"`
-	Type         int           `json:"type"`
-	AssetType    string        `json:"-"`
+	Name         string        `json:"name" eliona:"name,filterable"`
+	IPAddress    string        `json:"address" eliona:"ip_address,filterable"`
+	MacAddress   string        `json:"mac_address" eliona:"mac_address,filterable"`
+	Type         int           `json:"type" eliona:"type,filterable"`
+	AssetType    string        `json:"-" eliona:"asset_type,filterable"`
 	UUID         string        `json:"uuid"`
-	Version      string        `json:"version"`
+	Version      string        `json:"version" eliona:"firmware_version,filterable"`
 	Measurements *Measurements `json:"measurements"`
+}
+
+func (doorlock *DeviceInfo) AdheresToFilter(config apiserver.Configuration) (bool, error) {
+	f := apiFilterToCommonFilter(config.AssetFilter)
+	fp, err := utils.StructToMap(doorlock)
+	if err != nil {
+		return false, fmt.Errorf("converting struct to map: %v", err)
+	}
+	adheres, err := common.Filter(f, fp)
+	if err != nil {
+		return false, err
+	}
+	return adheres, nil
 }
 
 type Measurements struct {
@@ -117,11 +133,24 @@ type accessPointResponse struct {
 }
 
 type DoorLock struct {
-	ID           int    `json:"id"`
-	DeviceID     int    `json:"device_id"`
+	ID           int    `json:"id" eliona:"id"`
+	DeviceID     int    `json:"device_id" eliona:"device_id"`
 	Active       bool   `json:"is_active"`
-	Name         string `json:"name"`
-	BatteryLevel int    `json:"battery_level"`
+	Name         string `json:"name" eliona:"name"`
+	BatteryLevel int    `json:"battery_level" eliona:"battery"`
+}
+
+func (doorlock *DoorLock) AdheresToFilter(config apiserver.Configuration) (bool, error) {
+	f := apiFilterToCommonFilter(config.AssetFilter)
+	fp, err := utils.StructToMap(doorlock)
+	if err != nil {
+		return false, fmt.Errorf("converting struct to map: %v", err)
+	}
+	adheres, err := common.Filter(f, fp)
+	if err != nil {
+		return false, err
+	}
+	return adheres, nil
 }
 
 type PaginationLink struct {
@@ -197,4 +226,18 @@ func OpenDoorlock(id int, conf apiserver.Configuration) error {
 		return fmt.Errorf("reading response from %s: %v", url, err)
 	}
 	return nil
+}
+
+func apiFilterToCommonFilter(input [][]apiserver.FilterRule) [][]common.FilterRule {
+	result := make([][]common.FilterRule, len(input))
+	for i := 0; i < len(input); i++ {
+		result[i] = make([]common.FilterRule, len(input[i]))
+		for j := 0; j < len(input[i]); j++ {
+			result[i][j] = common.FilterRule{
+				Parameter: input[i][j].Parameter,
+				Regex:     input[i][j].Regex,
+			}
+		}
+	}
+	return result
 }

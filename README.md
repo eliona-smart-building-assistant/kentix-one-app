@@ -76,12 +76,12 @@ This app also allows the KentixONE devices to be controlled from Eliona environm
 
 Assets for all devices connected to the configured "Manager" device are created automatically when the configuration is added.
 
-To select which assets to create, a filter could be specified in config. The schema of the filter is defined in the `openapi.yaml` file.
+To select which assets to create, a filter could be specified in config. The schema of the filter is defined in the `openapi.yaml` file. Please note that regex special characters have to be double-escaped with `\\` to avoid getting interpreted.
 
 Possible filter parameters are defined in following places:
 
-- `conf.go:DoesDeviceAdhereToFilter` for devices
-- `conf.go:DoesDoorlockAdhereToFilter` for doorlocks
+- `kentix/kentix.go:DeviceInfo` for devices
+- `kentix/kentix.go:Doorlock` for doorlocks
 
 ## Tools
 
