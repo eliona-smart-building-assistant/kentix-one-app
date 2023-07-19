@@ -68,7 +68,7 @@ func createDoorlockAssetIfNecessary(config apiserver.Configuration, projectId st
 		parentAssetId: parentAssetId,
 		identifier:    fmt.Sprint(doorlock.ID),
 		assetType:     kentix.DoorlockAssetType,
-		name:          fmt.Sprintf("%s", doorlock.Name),
+		name:          doorlock.Name,
 		description:   fmt.Sprintf("%s (%v)", doorlock.Name, doorlock.ID),
 	}
 	created, assetID, err := createAssetIfNecessary(assetData)

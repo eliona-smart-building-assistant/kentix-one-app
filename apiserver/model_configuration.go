@@ -9,10 +9,10 @@
 
 package apiserver
 
-// Configuration - Each configuration defines access to one KentixONE device.
+// Configuration - Each configuration defines access to one KentixONE manager device and its satellites.
 type Configuration struct {
 
-	// Internal identifier for the configured device (created automatically). This identifier have to use always if you remove or update existing configured endpoints.
+	// Internal identifier for the configured device (created automatically).
 	Id *int64 `json:"id,omitempty"`
 
 	// IP or hostname of the KentixONE device
