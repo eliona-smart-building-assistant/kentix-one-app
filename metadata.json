@@ -1,6 +1,6 @@
 {
   "name": "kentix-one",
-  "elionaMinVersion": "9.2.0",
+  "elionaMinVersion": "v10.1.0",
   "displayName": {
     "en": "KentixONE app",
     "de": "KentixONE app"
