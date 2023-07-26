@@ -103,7 +103,7 @@ For the database access [SQLBoiler](https://github.com/volatiletech/sqlboiler) i
 ./generate-db.sh # Linux
 ```
 
-### Mock KentixONE devices ###
+### Mock the KentixONE devices ###
 `kentix-one-mock` folder contains mock endpoints implementation:
 - `access-manager`: `localhost:3031`
 - `alarm-manager`: `localhost:3032`
