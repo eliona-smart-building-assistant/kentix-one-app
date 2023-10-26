@@ -2,8 +2,8 @@
   "name": "kentix-one",
   "elionaMinVersion": "v10.1.0",
   "displayName": {
-    "en": "KentixONE app",
-    "de": "KentixONE app"
+    "en": "KentixONE",
+    "de": "KentixONE"
   },
   "description": {
     "en": "The KentixONE app allows access to KentixONE devices.",
