@@ -26,7 +26,7 @@ RUN DATE=$(date) && \
     GIT_COMMIT=$(git rev-list -1 HEAD) && \
     go build -ldflags "-X 'kentix-one/apiservices.BuildTimestamp=$DATE' -X 'kentix-one/apiservices.GitCommit=$GIT_COMMIT'" -o ../app
 
-FROM eliona/base-alpine:latest-3.17 AS target
+FROM eliona/base-alpine:latest AS target
 
 COPY --from=build /app ./
 COPY conf/*.sql ./conf/
