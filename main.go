@@ -18,7 +18,6 @@ package main
 import (
 	"context"
 	"kentix-one/conf"
-	"kentix-one/eliona"
 	"time"
 
 	"github.com/eliona-smart-building-assistant/go-eliona/app"
@@ -37,18 +36,12 @@ func main() {
 	defer database.Close()
 	boil.SetDB(database)
 
-	if log.Lev() >= log.DebugLevel {
+	if log.Lev() >= log.TraceLevel {
 		boil.DebugMode = true
-		boil.DebugWriter = log.GetWriter(log.DebugLevel, "database")
+		boil.DebugWriter = log.GetWriter(log.TraceLevel, "database")
 	}
 
-	// Necessary to close used init resources, because db.Pool() is used in this app.
-	defer db.ClosePool()
-	// Init the app before the first run.
-	app.Init(db.Pool(), app.AppName(),
-		app.ExecSqlFile("conf/init.sql"),
-		eliona.InitEliona,
-	)
+	initaialize()
 
 	common.WaitForWithOs(
 		common.Loop(collectData, time.Second),
