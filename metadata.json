@@ -1,6 +1,6 @@
 {
   "name": "kentix-one",
-  "elionaMinVersion": "v10.1.0",
+  "elionaMinVersion": "v12.0.0",
   "displayName": {
     "en": "KentixONE",
     "de": "KentixONE"
@@ -14,6 +14,11 @@
   ],
   "apiUrl": "v1",
   "apiSpecificationPath": "/version/openapi.json",
-  "useEnvironment": [ "CONNECTION_STRING", "API_ENDPOINT", "API_TOKEN" ],
+  "useEnvironment": [
+    "CONNECTION_STRING",
+    "INIT_CONNECTION_STRING",
+    "API_ENDPOINT",
+    "API_TOKEN"
+  ],
   "documentationUrl": "https://doc.eliona.io/collection/eliona-apps/externe-apps/kentixone"
 }

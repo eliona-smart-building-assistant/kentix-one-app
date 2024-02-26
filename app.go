@@ -25,10 +25,24 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/eliona-smart-building-assistant/go-eliona/app"
 	"github.com/eliona-smart-building-assistant/go-utils/common"
+	"github.com/eliona-smart-building-assistant/go-utils/db"
 	utilshttp "github.com/eliona-smart-building-assistant/go-utils/http"
 	"github.com/eliona-smart-building-assistant/go-utils/log"
 )
+
+func initaialize() {
+	ctx := context.Background()
+
+	conn := db.NewInitConnectionWithContextAndApplicationName(ctx, app.AppName())
+	defer conn.Close(ctx)
+
+	app.Init(conn, app.AppName(),
+		app.ExecSqlFile("conf/init.sql"),
+		eliona.InitEliona,
+	)
+}
 
 func collectData() {
 	configs, err := conf.GetConfigs(context.Background())
