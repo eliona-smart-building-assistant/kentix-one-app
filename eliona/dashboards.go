@@ -30,7 +30,7 @@ func KentixDevicesDashboard(projectId string) (api.Dashboard, error) {
 	dashboard.ProjectId = projectId
 	dashboard.Widgets = []api.Widget{}
 
-	multiSensors, _, err := client.NewClient().AssetsApi.
+	multiSensors, _, err := client.NewClient().AssetsAPI.
 		GetAssets(client.AuthenticationContext()).
 		AssetTypeName(kentix.MultiSensorAssetType).
 		ProjectId(projectId).
@@ -39,7 +39,7 @@ func KentixDevicesDashboard(projectId string) (api.Dashboard, error) {
 		return api.Dashboard{}, fmt.Errorf("fetching MulitSensor assets: %v", err)
 	}
 
-	doorlocks, _, err := client.NewClient().AssetsApi.
+	doorlocks, _, err := client.NewClient().AssetsAPI.
 		GetAssets(client.AuthenticationContext()).
 		AssetTypeName(kentix.DoorlockAssetType).
 		ProjectId(projectId).
