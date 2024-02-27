@@ -4,9 +4,9 @@ go 1.18
 
 require (
 	github.com/eliona-smart-building-assistant/app-integration-tests v1.1.2
-	github.com/eliona-smart-building-assistant/go-eliona v1.9.31
+	github.com/eliona-smart-building-assistant/go-eliona v1.9.32
 	github.com/eliona-smart-building-assistant/go-eliona-api-client/v2 v2.6.3
-	github.com/eliona-smart-building-assistant/go-utils v1.0.61
+	github.com/eliona-smart-building-assistant/go-utils v1.0.62
 	github.com/friendsofgo/errors v0.9.2
 	github.com/gorilla/mux v1.8.1
 	github.com/volatiletech/null/v8 v8.1.2
@@ -35,7 +35,7 @@ require (
 	github.com/stretchr/testify v1.8.4 // indirect
 	github.com/volatiletech/inflect v0.0.1 // indirect
 	github.com/volatiletech/randomize v0.0.1 // indirect
-	golang.org/x/crypto v0.19.0 // indirect
+	golang.org/x/crypto v0.20.0 // indirect
 	golang.org/x/net v0.21.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
 	golang.org/x/xerrors v0.0.0-20231012003039-104605ab7028 // indirect
