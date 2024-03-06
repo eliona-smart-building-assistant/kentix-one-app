@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/eliona-smart-building-assistant/app-integration-tests v1.1.2
-	github.com/eliona-smart-building-assistant/go-eliona v1.9.32
+	github.com/eliona-smart-building-assistant/go-eliona v1.9.34
 	github.com/eliona-smart-building-assistant/go-eliona-api-client/v2 v2.6.3
 	github.com/eliona-smart-building-assistant/go-utils v1.0.62
 	github.com/friendsofgo/errors v0.9.2
