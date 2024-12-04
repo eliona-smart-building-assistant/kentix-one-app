@@ -21,7 +21,7 @@ info:
   description: API to access and configure the KentixONE app
 externalDocs:
   description: Find out more about the KentixONE app
-  url: https://github.com/eliona-smart-building-assistant/kentix-one-app
+  url: https://doc.eliona.io/collection/eliona-english/eliona-apps/apps/kentixone
 servers:
   - url: http://kentix-one/v1
 
